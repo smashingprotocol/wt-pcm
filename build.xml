@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<project basedir="." default="default" name="pcm">
+
+    <property environment="env"/>
+    <property name="ECLIPSE_HOME" value="../../eclipse-jee-luna-R-win32-x86_64/eclipse/"/>
+    <property name="junit.output.dir" value="junit"/>
+	<property name="dist" value="C:/dist"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.5"/>
+    <property name="source" value="1.5"/>
+	<property name="project.Name" value="${ant.project.name}"/>
+	<property name="maven.repo.dir" value="../../../../${env.HOMEPATH}/.m2/repository"/>
+	<property file="pcm.properties"/>
+	<property name="screenshot.dir" value="${user.dir}/${junit.output.dir}/screenshot/"/>
+	<property name="tests.dir" value="${env.HOMEPATH}/tests"/>
+	
+	
+    <target name="default" depends="antForm,dotest,junitreport,email" />
+    
+	<!--AntForm Property -->
+	<taskdef name="antmenu" classname="com.sardak.antform.AntForm" classpath="lib/antform.jar"/> 
+	
+	<target name="antForm">
+		<antmenu title="${project.Name} WebDriver Test" image="images_pcm_logo.jpg">
+			<selectionProperty label="Select Host:" 
+					property="TEST_HOST" 
+					values="${testHost}"
+					unless="wt.antform.skip"/>
+			<selectionProperty label="Select Browser:" 
+								property="TEST_BROWSER" 
+								values="${browserHost}"
+								unless="wt.antform.skip"/>
+			<selectionProperty label="Select Host:" 
+					property="TEST_ENV" 
+					values="${testEnv}"
+					unless="wt.antform.skip"/>
+			<separator unless="wt.antform.skip"></separator>
+			<booleanProperty label="Execute Verify Order" property="isVerifyOrder" unless="wt.antform.skip"/>
+			<booleanProperty label="Execute Shopping Cart" property="isShoppingCart" unless="wt.antform.skip"/>
+			<booleanProperty label="Execute Search" property="isSearch" unless="wt.antform.skip"/>
+			<booleanProperty label="Execute PDP Pricing Display" property="isPDP" unless="wt.antform.skip"/>
+			<booleanProperty label="My Account" property="isMyAccount" unless="wt.antform.skip"/>
+			<booleanProperty label="Include Create Account" property="isCreateAccount" unless="wt.antform.skip"/>
+			<booleanProperty label="Shipping Method" property="isshippingMethod" unless="wt.antform.skip"/>
+			<separator unless="wt.antform.skip"></separator>
+			<booleanProperty label="Send a Email Report?:" property="createEmailReport" unless="wt.antform.skip"/>	
+			<buttonBar>
+				<button label="Cancel" type="cancel" target=""/>
+			</buttonBar>	
+			
+		</antmenu>
+		<property name="wt.antform.skip" value="true" description="Prevent antform in restarting"/>
+	</target>
+	
+    <!-- Maven Dependencies repository classpath  -->
+    <path id="Maven Dependencies.libraryclasspath">
+    	<fileset dir="${maven.repo.dir}">
+    		<include name="*.jar"></include>
+    	</fileset>
+    </path>
+    
+    <!--pcm libraries path -->
+    <path id="pcm.classpath">
+    	<fileset dir="lib">
+    		<include name="*.jar"></include>
+    	</fileset>
+    	<path refid="Maven Dependencies.libraryclasspath"/>
+    </path>
+    
+    
+    <target name="clean">    
+       <delete dir="${junit.output.dir}"/>
+    </target>
+    
+    <target name="cleanall" depends="clean">
+    	<delete dir="target/classes"/>
+        <delete dir="target/test-classes"/>
+        <delete dir="${junit.output.dir}"/>
+	</target>
+    
+    <target name="dotest" depends="clean">
+		<ant dir="tests" antfile="allTests.xml" inheritRefs="true"/>
+    </target>
+    
+  	<!-- Create directories for the JUNIT logs -->  
+    <target name="junitreport">
+        <junitreport todir="${junit.output.dir}">
+            <fileset dir="${junit.output.dir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report styledir="reportstyle" format="noframes" todir="${junit.output.dir}"/>
+        </junitreport>
+    </target>
+	
+	<!-- classloaded for ant email to work on different dist -->
+	
+	<path id="mail.path">
+	    <pathelement location="lib/mail-1.4.jar"/>
+	</path>
+	
+	<taskdef name="classloadertask"
+	    classname="org.apache.tools.ant.taskdefs.ClassloaderTask" 
+	    classpath="lib/ant-classloadertask.jar"/>
+	    <classloadertask classpathRef="mail.path" loader="thread"/> 
+  
+	<target name="email" if="createEmailReport">
+		<mail mailhost="${mailhost}" mailport="${mailport}" subject="[${ant.project.name}:${TEST_HOST}]: Automated Sanity Test Result" tolist="${tolist}">
+			<from address="${from}"/>
+			<message>Automated Sanity test has been completed. Please check results on the attachment provided.</message>
+			<attachments>
+				<fileset dir="${junit.output.dir}">
+					<include name="all-tests.html"/>
+					<include name="junit-noframes.html"/>					
+				</fileset>
+			</attachments>
+		</mail>
+				
+	</target>
+	
+	<!-- Create Distribution file -->
+	<target name="create-dist">
+		<!--<delete dir="${dist}"/>
+		<mkdir dir="${dist}/${project.Name}"/> -->
+		<copy includeemptydirs="false" todir="${dist}/${project.Name}" overwrite="true">
+            <fileset dir="../${project.Name}">
+                <exclude name="**/src/"/>
+            	 <exclude name="**/*.java"/>
+            	<exclude name="compile.xml"/>
+            </fileset>
+        </copy> 
+	</target>
+	
+	
+</project>
