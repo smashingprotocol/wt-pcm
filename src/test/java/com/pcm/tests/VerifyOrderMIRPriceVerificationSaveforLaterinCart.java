@@ -10,6 +10,7 @@ import org.junit.Test;
 import com.pcm.engine.Config;
 import com.pcm.includes.Cart;
 import com.pcm.includes.Homepage;
+import com.pcm.includes.PDP;
 import com.pcm.includes.Search;
 import com.pcm.includes.SignIn;
 import com.pcm.request.ClickElement;
@@ -64,7 +65,8 @@ public class VerifyOrderMIRPriceVerificationSaveforLaterinCart {
 			
 			//Click Item Description to go to PDP and get edpno
 			ClickElement.byXPath(Config.driver, "(" + pr.getProperty("SEARCH_LINK_PDP_XPATH") + ") [position()=1]");
-			edpno = verifyXPath.getAttributeValue(Config.driver, pr.getProperty("PDP_INPUT_EDPNO_XPATH"), "value");
+			//edpno = verifyXPath.getAttributeValue(Config.driver, pr.getProperty("PDP_INPUT_EDPNO_XPATH"), "value");
+			edpno = PDP.getEDPNo(Config.driver, sku);
 			
 			//Navigate shopping cart
 			Cart.navigate(Config.driver); 

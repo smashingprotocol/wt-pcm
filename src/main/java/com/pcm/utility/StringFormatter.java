@@ -16,4 +16,15 @@ public class StringFormatter {
 		return formattedString;
 	}
 
+	public static String formatFloattoCommaDecimalNumString(Float floatValue,
+			String decimalFormat) {
+		
+		String formattedString = String.format("%.02f", floatValue);
+		Double dValue = Double.parseDouble(formattedString);
+		DecimalFormat formatter = new DecimalFormat(decimalFormat);
+		formattedString = formatter.format(dValue);
+		return formattedString;
+		
+	}
+
 }

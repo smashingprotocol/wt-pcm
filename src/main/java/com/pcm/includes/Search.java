@@ -26,9 +26,16 @@ public class Search {
 		FileReader reader = new FileReader("pcm.properties");
 		properties = new Properties();
 		properties.load(reader);
-
-		SetInputField.byXPath(driver,properties.getProperty("SEARCH_INPUT_XPATH"),keyword);
-		ClickElement.byXPath(driver,properties.getProperty("SEARCH_LINK_XPATH"));
+		
+		try {
+			
+			SetInputField.byXPath(driver,properties.getProperty("SEARCH_INPUT_XPATH"),keyword);
+			ClickElement.byXPath(driver,properties.getProperty("SEARCH_LINK_XPATH"));
+			
+		} catch (Exception e){
+			//PDP.searchKeyword(driver, keyword);
+		}
+		
 		
 	}
 
@@ -44,10 +51,10 @@ public class Search {
 		// Enter Quantity, Click Add to cart and Proceed to cart button on the modal	
 		SetInputField.byXPath(driver,"//input[@id='addCartQty" + sku + "']",qty);
 		ClickElement.byXPath(driver,"//a[@id='addCartButtonFor" + sku + "']"); // Click the Add to cart button in the search.
-	
-		if(verifyXPath.isfound(driver, properties.getProperty("SEARCH_BTN_MODALCONTINUESHOPPING_XPATH"))){
-			ClickElement.byXPath(driver, properties.getProperty("SEARCH_BTN_MODALCONTINUESHOPPING_XPATH"));
-		}
+		
+		//if(verifyXPath.isfound(driver, properties.getProperty("SEARCH_BTN_MODALCONTINUESHOPPING_XPATH"))){
+			//ClickElement.byXPath(driver, properties.getProperty("SEARCH_BTN_MODALCONTINUESHOPPING_XPATH"));
+		//}
 		
 		
 		} catch (Exception e){
@@ -249,7 +256,8 @@ public class Search {
 		
 		brandCount = verifyXPath.getText(driver, "//label[@for='" + brand + "']");
 		brandCount = brandCount.replaceAll("[^\\d.]", "");
-	
+		brandCount = brandCount.replaceAll("[.]", "");
+		
 		return brandCount;
 		
 	}
@@ -294,12 +302,9 @@ public class Search {
 
 	public static void openPDPbySearchSku(WebDriver driver, String sku) throws Exception {
 		
-		FileReader reader = new FileReader("pcm.properties");
-		properties = new Properties();
-		properties.load(reader);
-		
 		Search.keyword(Config.driver, sku);
 		ClickElement.byXPath(Config.driver, "//div[@class='rcprodinfo']//a[@data-action='Link:Product Detail Page' and contains(@href,'" + sku + "')]");
+
 		
 	}
 

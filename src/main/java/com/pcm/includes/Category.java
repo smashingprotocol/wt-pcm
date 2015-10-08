@@ -1,6 +1,7 @@
 package com.pcm.includes;
 
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.Properties;
 
 import org.openqa.selenium.WebDriver;
@@ -69,6 +70,32 @@ public class Category {
 		catCount = catCount.replaceAll("[^\\d.]", "");
 	
 		return catCount;
+	}
+
+	public static void clickOpenBoxOffer(WebDriver driver) throws Exception {
+		
+		FileReader reader = new FileReader("pcm.properties");
+		properties = new Properties();
+		properties.load(reader);
+		
+		ClickElement.byXPath(driver, properties.getProperty("CATEGORY_LINK_OPENBOXOFFER_XPATH"));
+		
+		
+	}
+
+	public static String getOpenBoxOfferCount(WebDriver driver, String category) throws IOException {
+		
+		String catCount;
+		
+		FileReader reader = new FileReader("pcm.properties");
+		properties = new Properties();
+		properties.load(reader);
+		
+		catCount = verifyXPath.getText(driver, properties.getProperty("CATEGORY_LINK_OPENBOXOFFER_XPATH"));
+		catCount = catCount.replaceAll("[^\\d.]", "");
+	
+		return catCount;
+		
 	}
 
 }

@@ -73,6 +73,11 @@ public class SearchCategoryPagetoSearchPage {
 						Category.clickRefurbishedOffer(Config.driver);
 					}
 					
+					if(specialoffers.equals("openbox")){
+						catCount = Category.getOpenBoxOfferCount(Config.driver, category);
+						Category.clickOpenBoxOffer(Config.driver);
+					}
+					
 					//Verify the Item list count.
 					
 					if(Integer.valueOf(catCount) < 25){

@@ -43,10 +43,16 @@
 		<version>2.45.0</version>
 	</dependency>
     <dependency>
-	<groupId>log4j</groupId>
-	<artifactId>log4j</artifactId>
-	<version>1.2.17</version>
-</dependency>
-     
+		<groupId>log4j</groupId>
+		<artifactId>log4j</artifactId>
+		<version>1.2.17</version>
+	</dependency>
+     <dependency>
+	      <!-- excel -->
+	      <groupId>org.apache.poi</groupId>
+	      <artifactId>poi</artifactId>
+	      <version>3.13-beta1</version>
+	      <scope>compile</scope>
+   </dependency>
   </dependencies>
 </project>

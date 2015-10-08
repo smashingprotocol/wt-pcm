@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import com.pcm.engine.Config;
 import com.pcm.includes.Homepage;
+import com.pcm.includes.PDP;
 import com.pcm.includes.Search;
 import com.pcm.utility.StatusLog;
 import com.pcm.utility.TableContainer;
@@ -75,7 +76,7 @@ public class SearchFacetFilteringPDPSearch {
 					} //end if 
 					
 					Search.openPDPbySearchResult(Config.driver, keyword);
-					Search.keyword(Config.driver, pr.getProperty("SEARCH_KEYWORD_DFLT"));
+					PDP.searchKeyword(Config.driver, pr.getProperty("SEARCH_KEYWORD_DFLT"));
 					
 					//Verify the Item count is the default 25.
 					testStatus = verifyXPath.isfound(Config.driver, "(" + pr.getProperty("SEARCH_ITEMCOL_XPATH") + ") [position()=25]");

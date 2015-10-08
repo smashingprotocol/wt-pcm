@@ -39,7 +39,7 @@ public class PDPWhatisMyFinalPricePriceDisplay {
 	
 	
 	@Test
-	public void PDP_What_is_My_Final_Price_Display() throws Exception{
+	public void PDP_What_is_My_Final_Price_Price_Display() throws Exception{
 		
 		try{
 			
