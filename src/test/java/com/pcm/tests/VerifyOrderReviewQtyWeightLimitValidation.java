@@ -45,8 +45,7 @@ public class VerifyOrderReviewQtyWeightLimitValidation {
 			Homepage.setupConfig(sys.getProperty("host"),sys.getProperty("browser"));
 			env = sys.getProperty("pcmHost");
 			Properties pr = Config.properties(); //create a method for the pcm.properies
-			
-			PDP pdp = new PDP();
+
 			email = pr.getProperty("CHECKOUT_USER_TAX_EMAIL_" + env);
 			password = pr.getProperty("CHECKOUT_USER_PASSWORD");
 			sku = pr.getProperty("SEARCH_SKU_OVERWEIGHT");
@@ -64,7 +63,7 @@ public class VerifyOrderReviewQtyWeightLimitValidation {
 			Search.addtocart(Config.driver, sku, "1");
 			
 			//get the edpno in PDP
-			edpno = pdp.getEDPNo(Config.driver,sku);
+			edpno = PDP.getEDPNo(Config.driver,sku);
 			
 			//Go to cart and Proceed to Checkout.
 			Cart.navigate(Config.driver);

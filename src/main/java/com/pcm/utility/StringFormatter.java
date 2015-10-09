@@ -22,6 +22,7 @@ public class StringFormatter {
 		String formattedString = String.format("%.02f", floatValue);
 		Double dValue = Double.parseDouble(formattedString);
 		DecimalFormat formatter = new DecimalFormat(decimalFormat);
+		
 		formattedString = formatter.format(dValue);
 		return formattedString;
 		

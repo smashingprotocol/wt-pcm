@@ -94,7 +94,7 @@
     </target>
 	
 	<!-- classloaded for ant email to work on different dist -->
-	
+
 	<path id="mail.path">
 	    <pathelement location="lib/mail-1.4.jar"/>
 	</path>
@@ -103,7 +103,7 @@
 	    classname="org.apache.tools.ant.taskdefs.ClassloaderTask" 
 	    classpath="lib/ant-classloadertask.jar"/>
 	    <classloadertask classpathRef="mail.path" loader="thread"/> 
-	
+
 	<target name="email" if="createEmailReport">
 		<mail mailhost="${mailhost}" mailport="${mailport}" subject="[${ant.project.name}:${TEST_HOST}]: Automated Sanity Test Result" tolist="${tolist}">
 			<from address="${from}"/>

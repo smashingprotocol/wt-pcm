@@ -211,7 +211,7 @@ public class PDP {
 	public static String getDiscountAmt(WebDriver driver, String listPrice,
 			String finalPrice) {
 		
-		Float intDiscount = Float.valueOf(listPrice) - Float.valueOf(finalPrice);
+		Float intDiscount = Float.valueOf(listPrice.replaceAll(",", "")) - Float.valueOf(finalPrice.replaceAll(",", ""));
 		String amt = StringFormatter.formatFloattoCommaDecimalNumString(intDiscount,"#,###");
 		
 		return amt;
@@ -231,9 +231,9 @@ public class PDP {
 	}
 
 	public static String getDiscountPercentage(WebDriver driver,
-			String listPrice, String discountAmt) {
+			String listPrice, String discountAmt) throws Exception{
 		
-		Float percentValue = (Float.valueOf(discountAmt) / Float.valueOf(listPrice))*100;
+		Float percentValue = (Float.valueOf(discountAmt.replaceAll(",", "")) / Float.valueOf(listPrice.replaceAll(",", "")))*100;
 		String percentage = StringFormatter.formatFloattoCommaDecimalNumString(percentValue,"#,###");
 		
 		return percentage;
