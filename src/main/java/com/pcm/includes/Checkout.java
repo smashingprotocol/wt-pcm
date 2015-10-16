@@ -16,6 +16,7 @@ import org.openqa.selenium.WebElement;
 import com.pcm.form.SetInputField;
 import com.pcm.form.SetSelectField;
 import com.pcm.request.ClickElement;
+import com.pcm.utility.Wait;
 import com.pcm.verify.verifyXPath;
 
 public class Checkout {
@@ -23,6 +24,42 @@ public class Checkout {
 	public static Properties properties;
 	public static String shipMtdPriceTxt;
 	public static String shipMtdName;
+	
+	public static String PAYPAL_CREDIT_XPATH="//div[@id='paymentCardTypeBillLater']";
+	public static String PREFERRED_ACCOUNT_XPATH="//div[@id='paymentCardTypeMacmall']";
+	public static String SELECT_PAYPALMONTH_XPATH="//select[@id='date_of_birth_month']";
+	public static String SELECT_PAYPALDAY_XPATH="//select[@id='date_of_birth_day']";
+	public static String SELECT_PAYPALYEAR_XPATH="//select[@id='date_of_birth_year']";
+	public static String INPUT_PAYPALSSN_XPATH="//input[@id='ssn']";
+	public static String CHECK_PAYPALESIGN_XPATH="//input[@id='esign_consent']";
+	public static String BTN_PAYPALAGREE_XPATH="//a[@id='new_customer_agree_and_continue']";
+	public static String BTN_PAYPALCONFIRMAGREE_XPATH="//a[@id='submit_button']";
+	public static String CHECKOUT_INPUT_BILLEMAIL_XPATH="//input[@id='billingEmail']";
+	public static String CHECKOUT_INPUT_BILLCONFIRMEMAIL_XPATH="//input[@id='billingConfirmEmail']";
+	public static String CHECKOUT_INPUT_BILLPSWD_XPATH="//input[@id='billingPassword']";
+	public static String CHECKOUT_INPUT_BILLCONFIRMPSWD_XPATH="//input[@id='billingConfirmPassword']";
+	public static String CHECKOUT_INPUT_BILLFIRSTNAME_XPATH="//input[@id='billingFname']";
+	public static String CHECKOUT_INPUT_BILLLASTNAME_XPATH="//input[@id='billingLname']";
+	public static String CHECKOUT_INPUT_BILLCO_XPATH="//input[@id='billingCompany']";
+	public static String CHECKOUT_INPUT_BILLADD1_XPATH="//input[@id='billingAddress']";
+	public static String CHECKOUT_INPUT_BILLADD2_XPATH="//input[@id='billingAddress_2']";
+	public static String CHECKOUT_INPUT_BILLZIP_XPATH="//input[@id='billingZip']";
+	public static String CHECKOUT_INPUT_BILLPHONE_XPATH="//input[@id='billingTelephone']";
+	public static String CHECKOUT_INPUT_BILLMOBILE_XPATH="//input[@id='billingMobile']";
+	public static String CHECKOUT_LINK_BACKTOCART_XPATH="//a[@href='/n/Shopping-Cart/msc-cart?op=mall.web.zones.shoppingCartMain.processCart']";
+	public static String LINK_ORDERPAGE_HOME_XPATH="//a[@href='/home']";	
+	public static String IMG_SHOPPERAPPROVEDCLOSE_XPATH="//img[@id='sa_close']";
+	public static String INPUT_PREFERREDACT_SSN1_XPATH="//input[@id='ssn_1_input']";
+	public static String INPUT_PREFERREDACT_SSN2_XPATH="//input[@id='ssn_2_input']";
+	public static String INPUT_PREFERREDACT_SSN3_XPATH="//input[@id='ssn_3_input']";
+	public static String SELECT_PREFERREDACT_MM_XPATH="//select[@id='date_of_birth_month_input']";
+	public static String SELECT_PREFERREDACT_DD_XPATH="//select[@id='date_of_birth_day_input']";
+	public static String SELECT_PREFERREDACT_YY_XPATH="//select[@id='date_of_birth_year_input']";
+	public static String RADIO_PREFERREDACT__OWN_XPATH="//input[@id='residence_status_own']";
+	public static String CHECK_PREFERREDACT_ESIGN_XPATH="//input[@id='esign_consent_input']";
+	public static String BTN_PREFERREDACT_AGREE_XPATH="//input[@id='validate_order_button']";
+	public static String BTN_PREFERREDACT_CONFIRMAGREE_XPATH="//a[@id='prompt_submit_button']";
+	public static String INPUT_PREFERREDACT_INCOME_XPATH="//input[@id='annual_income_input']";
 	
 	public static void changeShipAddbyZipcode(WebDriver driver, String zipcode) throws Exception {
 		
@@ -138,20 +175,9 @@ public class Checkout {
 		
 	}
 
-	public static void returntoCart(WebDriver driver) throws FileNotFoundException {
-		
-		FileReader reader = new FileReader("pcm.properties");
-		properties = new Properties();
-		
-		//Go back to Shopping Cart
-		try {
-			properties.load(reader);
-			ClickElement.byXPath(driver,properties.getProperty("CHECKOUT_LINK_BACKTOCART_XPATH"));
+	public static void returntoCart(WebDriver driver) throws Exception {
 			
-		} catch (Exception e) {
-
-			Assert.fail("[CHECKOUT] Error in going back to cart." + e.getMessage());
-		}
+			ClickElement.byXPath(driver,CHECKOUT_LINK_BACKTOCART_XPATH);
 		
 	}
 
@@ -284,6 +310,7 @@ public class Checkout {
 			SetInputField.byXPath(driver, properties.getProperty("CHECKOUT_INPUT_BILLADD1_XPATH"), billFields.get(7));
 			SetInputField.byXPath(driver, properties.getProperty("CHECKOUT_INPUT_BILLADD2_XPATH"), billFields.get(8));
 			SetInputField.byXPath(driver, properties.getProperty("CHECKOUT_INPUT_BILLZIP_XPATH"), billFields.get(9));
+			Wait.sleep("6");
 			SetInputField.byXPath(driver, properties.getProperty("CHECKOUT_INPUT_BILLPHONE_XPATH"), billFields.get(10));
 			SetInputField.byXPath(driver, properties.getProperty("CHECKOUT_INPUT_BILLMOBILE_XPATH"), billFields.get(11));
 				
@@ -294,49 +321,20 @@ public class Checkout {
 	} //end enterNewCustomerFormTableContainer
 
 	public static void enterPayPalCreditNew(WebDriver driver, String sSNumber,
-			String exMonth, String dayofBirth, String monthofBirth,
+			String dayofBirth, String monthofBirth,
 			String yearofBirth) throws Exception {
 		
-		FileReader reader = new FileReader("pcm.properties");
-		properties = new Properties();
-		properties.load(reader);
-				
-		String exMonthXPath = properties.getProperty("CHECKOUT_SELECT_PAYPALCREDIT_MONTH_XPATH");
-		String exDayXPath = properties.getProperty("CHECKOUT_SELECT_PAYPALCREDIT_DAY_XPATH");
-		String exYearXPath  = properties.getProperty("CHECKOUT_SELECT_PAYPALCREDIT_YEAR_XPATH");
-		String agreeCheckXPath  = properties.getProperty("CHECKOUT_CHECK_PAYPALCREDIT_AGREE_XPATH");
+		Wait.waitforXPath(driver, SELECT_PAYPALMONTH_XPATH, "3000");
 		
+		SetSelectField.byXPath(driver, SELECT_PAYPALMONTH_XPATH, monthofBirth);
+		SetSelectField.byXPath(driver, SELECT_PAYPALDAY_XPATH, dayofBirth);
+		SetSelectField.byXPath(driver, SELECT_PAYPALYEAR_XPATH, yearofBirth);
+		SetInputField.byXPath(driver, INPUT_PAYPALSSN_XPATH, sSNumber);
 		
-		JavascriptExecutor jse=(JavascriptExecutor) driver;
+		ClickElement.byXPath(driver, CHECK_PAYPALESIGN_XPATH);
+		ClickElement.byXPath(driver, BTN_PAYPALAGREE_XPATH);
+		ClickElement.byXPath(driver, BTN_PAYPALCONFIRMAGREE_XPATH);
 		
-		ClickElement.byXPath(driver, properties.getProperty("CHECKOUT_BTN_PAYPALCREDIT_NEW_XPATH"));
-		SetInputField.byXPath(driver, properties.getProperty("CHECKOUT_INPUT_PAYPALCREDIT_SSN_XPATH"),sSNumber);
-		
-		//make the select Month field visible and select a month.
-		WebElement monthSelecty = driver.findElement(By.xpath(exMonthXPath));
-		//JavascriptExecutor jse=(JavascriptExecutor) driver;
-		jse.executeScript("arguments[0].setAttribute('style', 'display: block;')",monthSelecty);
-		SetSelectField.byXPath(driver, exMonthXPath, exMonth);
-		
-		//make the select Day field visible and select a month.
-		WebElement daySelecty = driver.findElement(By.xpath(exDayXPath));
-		//JavascriptExecutor jsd=(JavascriptExecutor) driver;
-		jse.executeScript("arguments[0].setAttribute('style', 'display: block;')",daySelecty);
-		SetSelectField.byXPath(driver, exDayXPath, dayofBirth);
-				
-		//make the select Year field visible and select a year.
-		WebElement yearSelecty = driver.findElement(By.xpath(exYearXPath));
-		//JavascriptExecutor jsy=(JavascriptExecutor) driver;
-		jse.executeScript("arguments[0].setAttribute('style', 'display: block;')",yearSelecty);
-		SetSelectField.byXPath(driver, exYearXPath , yearofBirth);
-		
-		//make the select Year field visible and select a year.
-		WebElement agreeCheckty = driver.findElement(By.xpath(agreeCheckXPath));
-		//JavascriptExecutor jsy=(JavascriptExecutor) driver;
-		jse.executeScript("arguments[0].removeAttribute('disabled', 'disabled')",agreeCheckty);
-		ClickElement.byXPath(driver, agreeCheckXPath);
-		
-		ClickElement.byXPath(driver, properties.getProperty("CHECKOUT_BTN_PAYPALCREDIT_CONTINUE_XPATH"));
 		
 	}
 
@@ -349,6 +347,68 @@ public class Checkout {
 		//Verify the QAS Modal I understand use address anyway link
 		ClickElement.byXPath(driver, properties.getProperty("CHECKOUT_LINK_QASMODAL_USEBILLADD_XPATH"));
 		ClickElement.byXPath(driver, properties.getProperty("CHECKOUT_LINK_QASMODAL_USESHIPADD_XPATH"));
+		
+		
+	}
+
+	public static void clickPayPalCredit(WebDriver driver) throws Exception {
+		
+		ClickElement.byXPath(driver, PAYPAL_CREDIT_XPATH);
+		
+		
+	}
+
+	public static void enterGuestBillAdd(WebDriver driver,
+			ArrayList<String> billFields) throws Exception {
+		
+		SetInputField.byXPath(driver, CHECKOUT_INPUT_BILLEMAIL_XPATH, billFields.get(0));
+		SetInputField.byXPath(driver, CHECKOUT_INPUT_BILLCONFIRMEMAIL_XPATH, billFields.get(1));
+		//SetInputField.byXPath(driver, CHECKOUT_INPUT_BILLPSWD_XPATH, billFields.get(2));
+		//SetInputField.byXPath(driver, CHECKOUT_INPUT_BILLCONFIRMPSWD_XPATH, billFields.get(3));
+		SetInputField.byXPath(driver, CHECKOUT_INPUT_BILLFIRSTNAME_XPATH, billFields.get(4));
+		SetInputField.byXPath(driver, CHECKOUT_INPUT_BILLLASTNAME_XPATH, billFields.get(5));
+		SetInputField.byXPath(driver, CHECKOUT_INPUT_BILLCO_XPATH, billFields.get(6));
+		SetInputField.byXPath(driver, CHECKOUT_INPUT_BILLADD1_XPATH, billFields.get(7));
+		SetInputField.byXPath(driver, CHECKOUT_INPUT_BILLADD2_XPATH, billFields.get(8));
+		SetInputField.byXPath(driver, CHECKOUT_INPUT_BILLZIP_XPATH, billFields.get(9));
+		Wait.sleep("5");
+		SetInputField.byXPath(driver, CHECKOUT_INPUT_BILLPHONE_XPATH, billFields.get(10));
+		SetInputField.byXPath(driver, CHECKOUT_INPUT_BILLMOBILE_XPATH, billFields.get(11));
+		
+		
+	}
+
+	public static void orderConfirmationBacktoHome(WebDriver driver) throws Exception {
+		Wait.waitforXPathToBeClickable(driver, IMG_SHOPPERAPPROVEDCLOSE_XPATH, "3000");
+		ClickElement.byXPath(driver,IMG_SHOPPERAPPROVEDCLOSE_XPATH);
+		ClickElement.byXPath(driver,LINK_ORDERPAGE_HOME_XPATH);
+	}
+
+	public static void clickPreferredAccount(WebDriver driver) throws Exception {
+		
+		ClickElement.byXPath(driver, PREFERRED_ACCOUNT_XPATH);
+		
+	}
+
+	public static void enterPreferredAccountNew(WebDriver driver, String sSN1,
+			String sSN2, String sSN3, String dayofBirth, String monthofBirth,
+			String yearofBirth, String rStatus, String income) throws Exception {
+		
+		Wait.waitforXPath(driver, INPUT_PREFERREDACT_SSN1_XPATH, "3000");
+		
+		SetInputField.byXPath(driver, INPUT_PREFERREDACT_SSN1_XPATH, sSN1);
+		SetInputField.byXPath(driver, INPUT_PREFERREDACT_SSN2_XPATH, sSN2);
+		SetInputField.byXPath(driver, INPUT_PREFERREDACT_SSN3_XPATH, sSN3);
+		SetSelectField.byXPath(driver, SELECT_PREFERREDACT_MM_XPATH, monthofBirth);
+		SetSelectField.byXPath(driver, SELECT_PREFERREDACT_DD_XPATH, dayofBirth);
+		SetSelectField.byXPath(driver, SELECT_PREFERREDACT_YY_XPATH, yearofBirth);
+		ClickElement.byXPath(driver, RADIO_PREFERREDACT__OWN_XPATH);
+		SetInputField.byXPath(driver, INPUT_PREFERREDACT_INCOME_XPATH, income);
+		
+		ClickElement.byXPath(driver, CHECK_PREFERREDACT_ESIGN_XPATH);
+		ClickElement.byXPath(driver, BTN_PREFERREDACT_AGREE_XPATH);
+		ClickElement.byXPath(driver, BTN_PREFERREDACT_CONFIRMAGREE_XPATH);
+		
 		
 		
 	}

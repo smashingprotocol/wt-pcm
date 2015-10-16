@@ -10,7 +10,8 @@
     <property name="target" value="1.5"/>
     <property name="source" value="1.5"/>
 	<property name="project.Name" value="${ant.project.name}"/>
-	<property name="maven.repo.dir" value="${env.HOMEPATH}/.m2/repository"/>
+	<!--<property name="maven.repo.dir" value="${env.HOMEPATH}/.m2/repository"/> -->
+	<property name="maven.repo.dir" value="${env.M2_REPO}"/>
 	<property file="pcm.properties"/>
 	<property name="screenshot.dir" value="${user.dir}/${junit.output.dir}/screenshot/"/>
 	<property name="tests.dir" value="${env.HOMEPATH}/tests"/>

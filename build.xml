@@ -10,7 +10,8 @@
     <property name="target" value="1.5"/>
     <property name="source" value="1.5"/>
 	<property name="project.Name" value="${ant.project.name}"/>
-	<property name="maven.repo.dir" value="../../../../${env.HOMEPATH}/.m2/repository"/>
+	<property name="maven.repo.dir" value="${env.M2_REPO}"/>
+	<!--<property name="maven.repo.dir" value="/../../../${env.M2_REPO}"/> -->
 	<property file="pcm.properties"/>
 	<property name="screenshot.dir" value="${user.dir}/${junit.output.dir}/screenshot/"/>
 	<property name="tests.dir" value="${env.HOMEPATH}/tests"/>
@@ -55,7 +56,7 @@
 	
     <!-- Maven Dependencies repository classpath  -->
     <path id="Maven Dependencies.libraryclasspath">
-    	<fileset dir="${maven.repo.dir}">
+    	<fileset dir="../${maven.repo.dir}">
     		<include name="*.jar"></include>
     	</fileset>
     </path>
@@ -94,7 +95,7 @@
     </target>
 	
 	<!-- classloaded for ant email to work on different dist -->
-
+	<!--
 	<path id="mail.path">
 	    <pathelement location="lib/mail-1.4.jar"/>
 	</path>
@@ -103,7 +104,7 @@
 	    classname="org.apache.tools.ant.taskdefs.ClassloaderTask" 
 	    classpath="lib/ant-classloadertask.jar"/>
 	    <classloadertask classpathRef="mail.path" loader="thread"/> 
-
+	-->
 	<target name="email" if="createEmailReport">
 		<mail mailhost="${mailhost}" mailport="${mailport}" subject="[${ant.project.name}:${TEST_HOST}]: Automated Sanity Test Result" tolist="${tolist}">
 			<from address="${from}"/>
@@ -122,7 +123,7 @@
 	<target name="create-dist">
 		<!--<delete dir="${dist}"/>
 		<mkdir dir="${dist}/${project.Name}"/> -->
-		<copy includeemptydirs="false" todir="${dist}/${project.Name}" overwrite="true">
+		<copy includeemptydirs="false" todir="${dist}/dist-${project.Name}" overwrite="true">
             <fileset dir="../wt-${project.Name}">
                 <exclude name="**/src/"/>
             	 <exclude name="**/*.java"/>

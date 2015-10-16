@@ -7,7 +7,7 @@
 	
 	<!-- Maven Dependencies repository classpath  -->
     <path id="Maven Dependencies.libraryclasspath">
-    	<fileset dir="../${maven.repo.dir}">
+    	<fileset dir="${maven.repo.dir}">
     		<include name="*.jar"></include>
     	</fileset>
     </path>
@@ -110,6 +110,7 @@
 		<antcall target="VerifyOrderQASModalisDisplay"/>
 		<antcall target="VerifyOrderCouponCodePriceSubTotal"/>
 		<antcall target="VerifyOrderPayPalCreditSubmitOrder"/>
+		<antcall target="VerifyOrderPreferredAcountSubmitOrder"/>
 		<antcall target="VerifyOrderEntrustValidLink"/>
 	</target>
 	
@@ -593,6 +594,21 @@
         	<sysproperty key="screenShotDir" value="${screenshot.dir}/${ant.project.invoked-targets}"/>
         	<sysproperty key="tableContainer" value="${basedir}/VerifyOrderPayPalCreditSubmitOrder.xls"/>
             <test name="com.pcm.tests.VerifyOrderPayPalCreditSubmitOrder" todir="../${junit.output.dir}"/>
+           	<classpath refid="pcm.classpath"/>
+   		 	<classpath refid="Maven Dependencies.libraryclasspath"/>
+        </junit>
+    </target>
+	
+	<target name="VerifyOrderPreferredAcountSubmitOrder" unless="isProd">
+    	<mkdir dir="${screenshot.dir}/${ant.project.invoked-targets}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+        	<sysproperty key="host" value="${TEST_HOST}"/>
+        	<sysproperty key="pcmHost" value="${TEST_ENV}"/>
+        	<sysproperty key="browser" value="${TEST_BROWSER}"/>
+        	<sysproperty key="screenShotDir" value="${screenshot.dir}/${ant.project.invoked-targets}"/>
+        	<sysproperty key="tableContainer" value="${basedir}/VerifyOrderPreferredAcountSubmitOrder.xls"/>
+            <test name="com.pcm.tests.VerifyOrderPreferredAcountSubmitOrder" todir="../${junit.output.dir}"/>
            	<classpath refid="pcm.classpath"/>
    		 	<classpath refid="Maven Dependencies.libraryclasspath"/>
         </junit>

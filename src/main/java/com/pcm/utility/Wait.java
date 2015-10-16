@@ -43,5 +43,13 @@ public class Wait {
 		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xpath)));
 		
 	}
-
+	
+	public static void sleep(String seconds) throws InterruptedException {
+		Long secL = Long.parseLong(seconds) * 1000;
+		
+		System.out.println("[WAIT] Sleep for " + seconds + " Seconds ...");
+		Thread.sleep(secL);
+		
+	}
+	
 }

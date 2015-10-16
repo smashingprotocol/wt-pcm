@@ -15,6 +15,7 @@ import com.pcm.includes.Cart;
 import com.pcm.includes.Checkout;
 import com.pcm.includes.Homepage;
 import com.pcm.includes.Search;
+import com.pcm.includes.SignIn;
 import com.pcm.request.ClickElement;
 import com.pcm.utility.StatusLog;
 import com.pcm.utility.TableContainer;
@@ -42,6 +43,9 @@ public class VerifyOrderPayPalCreditSubmitOrder {
 	public String DayofBirth;
 	public String MonthofBirth;
 	public String YearofBirth;
+	public String checkoutType;
+	public String title;
+	public ArrayList<String> billFields = new ArrayList<String>();;
 	
 	
 	
@@ -55,6 +59,7 @@ public class VerifyOrderPayPalCreditSubmitOrder {
 			
 			Homepage.setupConfig(sys.getProperty("host"),sys.getProperty("browser"));
 			env = sys.getProperty("pcmHost");
+			
 			Properties pr = Config.properties(); //create a method for the pcm.properies
 
 			email = pr.getProperty("CHECKOUT_USER_TAX_EMAIL_" + env);
@@ -67,26 +72,29 @@ public class VerifyOrderPayPalCreditSubmitOrder {
 			securityCode = pr.getProperty("CHECKOUT_SCODE_VISA");
 			
 			
-			//Search sku and add to cart
-			Cart.clearcart(Config.driver);
-			Search.keyword(Config.driver, sku);
-			Search.addtocart(Config.driver, sku, qty);
 			
-			//Go to cart and Proceed to checkout.
-			Cart.navigate(Config.driver);
-			//Get the Cart Order Total
-			cartOrderTotal = verifyXPath.getText(Config.driver,pr.getProperty("CART_LABEL_ORDERTOTAL_XPATH"));
-			cartOrderTotal = cartOrderTotal.replaceAll("[$, ]", "");
-			
-			Cart.newCustomer(Config.driver);
-			
+		
 			//Create array list for the billing fields.
-			ArrayList<String> billFields = new ArrayList<String>();
+			
 			String now = new SimpleDateFormat("mmddhhmmss").format(new Date());
 			int rowCount = TableContainer.getRowCount();
 			for(int i = 1; i <= rowCount; i++){
 				
-				String NewEmail = "manilaqa+" + now +  "_" + i +  "@gmail.com";
+				SignIn.logout(Config.driver);
+				
+				//Search sku and add to cart
+				Cart.clearcart(Config.driver);
+				
+				Search.keyword(Config.driver, sku);
+				Search.addtocart(Config.driver, sku, qty);
+				
+				//Go to cart and Proceed to checkout.
+				Cart.navigate(Config.driver);
+				//Get the Cart Order Total
+				cartOrderTotal = verifyXPath.getText(Config.driver,pr.getProperty("CART_LABEL_ORDERTOTAL_XPATH"));
+				cartOrderTotal = cartOrderTotal.replaceAll("[$, ]", "");
+				
+				String NewEmail = "manilaqa" + now +  "_" + i +  "@gmail.com";
 				
 				billFields.add(0, NewEmail);
 				billFields.add(1, NewEmail);
@@ -105,29 +113,46 @@ public class VerifyOrderPayPalCreditSubmitOrder {
 				DayofBirth = TableContainer.getCellValue(i, "DayofBirth");
 				MonthofBirth = TableContainer.getCellValue(i, "MonthofBirth");
 				YearofBirth = TableContainer.getCellValue(i, "YearofBirth");
+				checkoutType = TableContainer.getCellValue(i, "checkoutType");
+				title = TableContainer.getCellValue(i, "title");
 				
-			}
+				if(checkoutType.equals("new")){
+					Cart.newCustomer(Config.driver);
+					Checkout.enterNewCustomerBillAdd(Config.driver,billFields);
+				} //end if
+				
+				if(checkoutType.equals("guest")){
+					Cart.guestCheckout(Config.driver);
+					Checkout.enterGuestBillAdd(Config.driver,billFields);
+				} //end if
+				
+				
+				ClickElement.byXPath(Config.driver, pr.getProperty("CHECKOUT_CHECKBOX_SAMEASBILL_XPATH"));
+				
+				verifyOrderSubtTotal = verifyXPath.getText(Config.driver, pr.getProperty("CHECKOUT_LABEL_ORSUBTOTAL_XPATH")).replaceAll("[$, ]", "");
+				Assert.assertEquals(verifyOrderSubtTotal,cartOrderTotal);
+				
+				Checkout.clickPayPalCredit(Config.driver);
+				Checkout.placeOrderAccept(Config.driver);
+				Checkout.qasModalUseDefaultAddress(Config.driver);
+				ClickElement.byXPath(Config.driver, pr.getProperty("CHECKOUT_BTN_PLACEYOURORDER_XPATH"));
+				
+				Checkout.enterPayPalCreditNew(Config.driver,SSNumber,DayofBirth,MonthofBirth,YearofBirth);		
+				ClickElement.byXPath(Config.driver, pr.getProperty("CHECKOUT_BTN_PLACEYOURORDER_XPATH"));
+				
+				//Check the Subtotal in Order Confirmation
+				String orderConfirmationSubTotal = verifyXPath.getText(Config.driver, pr.getProperty("CHECKOUT_LABEL_ORSUBTOTAL_XPATH")).replaceAll("[$, ]", "");
+				Assert.assertEquals(orderConfirmationSubTotal,verifyOrderSubtTotal);
+				testStatus = true;
+				String OrderNumber = verifyXPath.getText(Config.driver, pr.getProperty("CHECKOUT_ORDERCONFIRMATION_ORNO_XPATH"));
+				StatusLog.printlnPassedResultTrue(Config.driver,"[CHECKOUT] Verify " + title + " with Order Number: " + OrderNumber,testStatus);
+				
+				Checkout.orderConfirmationBacktoHome(Config.driver);
+				
+			} //end for
 			
-			Checkout.enterNewCustomerBillAdd(Config.driver,billFields);
-			ClickElement.byXPath(Config.driver, pr.getProperty("CHECKOUT_CHECKBOX_SAMEASBILL_XPATH"));
 			
-			verifyOrderSubtTotal = verifyXPath.getText(Config.driver, pr.getProperty("CHECKOUT_LABEL_ORSUBTOTAL_XPATH")).replaceAll("[$, ]", "");
-			Assert.assertEquals(verifyOrderSubtTotal,cartOrderTotal);
-			
-			Checkout.enterPayPalCreditNew(Config.driver,SSNumber,exMonth,DayofBirth,MonthofBirth,YearofBirth);
-			Checkout.placeOrderAccept(Config.driver);
-			Checkout.qasModalUseDefaultAddress(Config.driver);
-			ClickElement.byXPath(Config.driver, pr.getProperty("CHECKOUT_BTN_PLACEYOURORDER_XPATH"));
-			
-			//Check the Subtotal in Order Confirmation
-			String orderConfirmationSubTotal = verifyXPath.getText(Config.driver, pr.getProperty("CHECKOUT_LABEL_ORSUBTOTAL_XPATH")).replaceAll("[$, ]", "");
-			Assert.assertEquals(orderConfirmationSubTotal,verifyOrderSubtTotal);
-			testStatus = true;
-			String OrderNumber = verifyXPath.getText(Config.driver, pr.getProperty("CHECKOUT_ORDERCONFIRMATION_ORNO_XPATH"));
-			StatusLog.printlnPassedResultTrue(Config.driver,"[CHECKOUT] Verify Order Checkout PayPal Credit with Order Number: " + OrderNumber,testStatus);
-			
-			
-			
+		
 			//Overall Test Result
 			Assert.assertTrue(StatusLog.errMsg, StatusLog.tcStatus);
 			
