@@ -7,15 +7,15 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.pcm.engine.Config;
+import com.grund.engine.Config;
 import com.pcm.includes.Cart;
 import com.pcm.includes.Checkout;
 import com.pcm.includes.Homepage;
 import com.pcm.includes.Search;
 import com.pcm.includes.SignIn;
-import com.pcm.request.ClickElement;
-import com.pcm.utility.TakeScreenShot;
-import com.pcm.verify.verifyXPath;
+import com.grund.request.ClickElement;
+import com.grund.utility.TakeScreenShot;
+import com.grund.verify.verifyXPath;
 
 
 
@@ -42,7 +42,7 @@ public class VerifyOrderRebatesPriceSubTotalUpdateQty {
 			
 			Homepage.setupConfig(sys.getProperty("host"),sys.getProperty("browser"));
 			env = sys.getProperty("pcmHost");
-			Properties pr = Config.properties(); //create a method for the pcm.properies
+			Properties pr = Config.properties("pcm.properties"); //create a method for the pcm.properies
 
 			//set test data
 			sku = pr.getProperty("SEARCH_SKU_INSTANTREBATES");

@@ -8,13 +8,13 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.pcm.engine.Config;
+import com.grund.engine.Config;
 import com.pcm.includes.Header;
 import com.pcm.includes.Homepage;
-import com.pcm.utility.StatusLog;
-import com.pcm.utility.TableContainer;
-import com.pcm.utility.TakeScreenShot;
-import com.pcm.verify.VerifyDocumentURL;
+import com.grund.utility.StatusLog;
+import com.grund.utility.TableContainer;
+import com.grund.utility.TakeScreenShot;
+import com.grund.verify.VerifyDocumentURL;
 
 public class MyAccountSwapAccountRedirect {
 
@@ -39,7 +39,7 @@ public class MyAccountSwapAccountRedirect {
 			
 			Homepage.setupConfig(sys.getProperty("host"),sys.getProperty("browser"));
 			env = sys.getProperty("pcmHost");
-			Properties pr = Config.properties(); //create a method for the pcm.properies
+			Properties pr = Config.properties("pcm.properties"); //create a method for the pcm.properies
 			
 			bdNavLink = pr.getProperty("BD_NAVLINK_prod");
 			Long wait = Long.parseLong(pr.getProperty("WAIT_SEC"));

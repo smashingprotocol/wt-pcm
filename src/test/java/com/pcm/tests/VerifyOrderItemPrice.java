@@ -7,14 +7,14 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.pcm.engine.Config;
+import com.grund.engine.Config;
 import com.pcm.includes.Cart;
 import com.pcm.includes.Checkout;
 import com.pcm.includes.Homepage;
 import com.pcm.includes.SignIn;
-import com.pcm.utility.StatusLog;
-import com.pcm.utility.TakeScreenShot;
-import com.pcm.verify.verifyXPath;
+import com.grund.utility.StatusLog;
+import com.grund.utility.TakeScreenShot;
+import com.grund.verify.verifyXPath;
 
 
 
@@ -39,7 +39,7 @@ public class VerifyOrderItemPrice {
 			
 			Homepage.setupConfig(sys.getProperty("host"),sys.getProperty("browser"));
 			env = sys.getProperty("pcmHost");
-			Properties pr = Config.properties(); //create a method for the pcm.properies
+			Properties pr = Config.properties("pcm.properties"); //create a method for the pcm.properies
 			
 			//set test data
 			String[] sku = new String[]{pr.getProperty("SEARCH_SKU_YOUSAVE"),pr.getProperty("SEARCH_SKU_IPAD")}; //set the property with multiple values

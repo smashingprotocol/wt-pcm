@@ -7,14 +7,14 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.pcm.engine.Config;
+import com.grund.engine.Config;
 import com.pcm.includes.Homepage;
 import com.pcm.includes.PDP;
 import com.pcm.includes.Search;
-import com.pcm.utility.StatusLog;
-import com.pcm.utility.TableContainer;
-import com.pcm.utility.TakeScreenShot;
-import com.pcm.verify.verifyXPath;
+import com.grund.utility.StatusLog;
+import com.grund.utility.TableContainer;
+import com.grund.utility.TakeScreenShot;
+import com.grund.verify.verifyXPath;
 
 
 
@@ -44,7 +44,7 @@ public class SearchFacetFilteringPDPSearch {
 			
 			Homepage.setupConfig(sys.getProperty("host"),sys.getProperty("browser"));
 			env = sys.getProperty("pcmHost");
-			Properties pr = Config.properties(); //create a method for the pcm.properies
+			Properties pr = Config.properties("pcm.properties"); //create a method for the pcm.properies
 			
 			//Define properties
 			qty = "1";

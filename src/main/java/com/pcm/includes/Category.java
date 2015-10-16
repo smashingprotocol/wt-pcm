@@ -6,8 +6,9 @@ import java.util.Properties;
 
 import org.openqa.selenium.WebDriver;
 
-import com.pcm.request.ClickElement;
-import com.pcm.verify.verifyXPath;
+import com.grund.request.ClickElement;
+import com.grund.verify.verifyXPath;
+
 
 public class Category {
 	

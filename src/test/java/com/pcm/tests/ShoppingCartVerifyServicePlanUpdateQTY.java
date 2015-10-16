@@ -7,12 +7,12 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.pcm.engine.Config;
+import com.grund.engine.Config;
 import com.pcm.includes.Cart;
 import com.pcm.includes.Homepage;
-import com.pcm.utility.TableContainer;
-import com.pcm.utility.TakeScreenShot;
-import com.pcm.verify.verifyXPath;
+import com.grund.utility.TableContainer;
+import com.grund.utility.TakeScreenShot;
+import com.grund.verify.verifyXPath;
 
 
 
@@ -48,7 +48,7 @@ public class ShoppingCartVerifyServicePlanUpdateQTY {
 			//setup driver,properties and includes
 			Homepage.setupConfig(sys.getProperty("host"),sys.getProperty("browser"));
 			env = sys.getProperty("pcmHost"); //prod or stage
-			Properties pr = Config.properties(); //
+			Properties pr = Config.properties("pcm.properties"); //
 			
 			//Define properties
 			qty = "1";

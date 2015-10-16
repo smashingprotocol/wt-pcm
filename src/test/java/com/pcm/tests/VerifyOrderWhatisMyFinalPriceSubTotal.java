@@ -7,15 +7,15 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.pcm.engine.Config;
+import com.grund.engine.Config;
 import com.pcm.includes.Cart;
 import com.pcm.includes.Homepage;
-import com.pcm.request.ClickElement;
-import com.pcm.utility.StatusLog;
-import com.pcm.utility.StringFormatter;
-import com.pcm.utility.TableContainer;
-import com.pcm.utility.TakeScreenShot;
-import com.pcm.verify.verifyXPath;
+import com.grund.request.ClickElement;
+import com.grund.utility.StatusLog;
+import com.grund.utility.StringFormatter;
+import com.grund.utility.TableContainer;
+import com.grund.utility.TakeScreenShot;
+import com.grund.verify.verifyXPath;
 
 
 
@@ -46,7 +46,7 @@ public class VerifyOrderWhatisMyFinalPriceSubTotal {
 			
 			Homepage.setupConfig(sys.getProperty("host"),sys.getProperty("browser"));
 			env = sys.getProperty("pcmHost");
-			Properties pr = Config.properties(); //create a method for the pcm.properies
+			Properties pr = Config.properties("pcm.properties"); //create a method for the pcm.properies
 	
 			//Define properties
 			qty = "1";
@@ -74,7 +74,7 @@ public class VerifyOrderWhatisMyFinalPriceSubTotal {
 			} //end for
 			
 			//convert the Final Price total from float to double to convert to have a format of 0,000.00
-			String formatFinalPrice = StringFormatter.formatFloattoCommaDecimalNumString(floatFinalPrice);
+			String formatFinalPrice = StringFormatter.formatFloattoCommaDecimalNumString(floatFinalPrice,"#,###.00");
 			
 			//Store the Cart Order Total
 			cartOrderTotal = verifyXPath.getText(Config.driver,pr.getProperty("CART_LABEL_ORDERTOTAL_XPATH"));

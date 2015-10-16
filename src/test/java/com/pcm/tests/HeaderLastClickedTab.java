@@ -8,14 +8,14 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.pcm.engine.Config;
+import com.grund.engine.Config;
 import com.pcm.includes.Cart;
 import com.pcm.includes.Header;
 import com.pcm.includes.Homepage;
-import com.pcm.request.ClickElement;
-import com.pcm.utility.StatusLog;
-import com.pcm.utility.TakeScreenShot;
-import com.pcm.verify.verifyXPath;
+import com.grund.request.ClickElement;
+import com.grund.utility.StatusLog;
+import com.grund.utility.TakeScreenShot;
+import com.grund.verify.verifyXPath;
 
 public class HeaderLastClickedTab {
 
@@ -34,7 +34,7 @@ public class HeaderLastClickedTab {
 			
 			Homepage.setupConfig(sys.getProperty("host"),sys.getProperty("browser"));
 			env = sys.getProperty("pcmHost");
-			Properties pr = Config.properties(); //create a method for the pcm.properies
+			Properties pr = Config.properties("pcm.properties"); //create a method for the pcm.properies
 			
 			//Startups/Entrepreneurs
 			Header.clickMenubyXPath(Config.driver,pr.getProperty("HEADER_LINK_MENU_STARTUP_XPATH"));

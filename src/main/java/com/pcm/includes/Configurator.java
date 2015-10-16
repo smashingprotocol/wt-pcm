@@ -5,9 +5,10 @@ import java.util.Properties;
 
 import org.openqa.selenium.WebDriver;
 
-import com.pcm.request.ClickElement;
-import com.pcm.utility.Wait;
-import com.pcm.verify.verifyXPath;
+import com.grund.request.ClickElement;
+import com.grund.utility.Wait;
+import com.grund.verify.verifyXPath;
+
 
 public class Configurator {
 
