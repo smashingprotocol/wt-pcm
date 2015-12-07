@@ -8,11 +8,11 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.grund.engine.Config;
-import com.pcm.includes.Homepage;
-import com.pcm.includes.Search;
 import com.grund.utility.StatusLog;
 import com.grund.utility.TakeScreenShot;
 import com.grund.verify.verifyXPath;
+import com.pcm.includes.Homepage;
+import com.pcm.includes.Search;
 
 public class SearchKeyword {
 	
@@ -23,7 +23,7 @@ public class SearchKeyword {
 	Properties sys = System.getProperties();
 	
 	@Test
-	public void searchkeyword() throws Exception{
+	public void Search_Keyword_with_Results_Display() throws Exception{
 		
 		try{
 			
@@ -32,15 +32,17 @@ public class SearchKeyword {
 			Properties pr = Config.properties("pcm.properties"); //create a method for the pcm.properies
 			
 			keyword = pr.getProperty("SEARCH_KEYWORD_DFLT");
-			qty = pr.getProperty("SEARCH_INPUT_QTY_XPATH");
 			
 			Search.keyword(Config.driver,keyword);
-			Assert.assertTrue(verifyXPath.isfound(Config.driver,qty));  //Verify the Qty field in search results appears
-			StatusLog.printlnPassedResult(Config.driver,"[PCM] Search for keyword: " + keyword);
+			
+			testStatus = verifyXPath.isfound(Config.driver,"(" + Search.ITEMCOL_XPATH + ") [position()=1]");  //Verify the Qty field in search results appears
+			StatusLog.printlnPassedResultTrue(Config.driver,"[TESTCASE] Search for keyword will not display empty item. " + keyword, testStatus);
+			
+			//Overall Test Result
+			Assert.assertTrue(StatusLog.errMsg, StatusLog.tcStatus);
 			
 		
 		} catch (Exception e){
-			StatusLog.printlnFailedResult(Config.driver,"[PCM] Search for keyword: " + keyword);
 			Assert.fail(e.getMessage());
 		}
 	}

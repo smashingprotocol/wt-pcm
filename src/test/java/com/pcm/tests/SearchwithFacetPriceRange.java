@@ -71,40 +71,24 @@ public class SearchwithFacetPriceRange {
 				
 				if(filterlabel.equals("andabove")){
 					
-					Search.clickFilterResultsBtn(Config.driver);
-					
-					//Verify the Price Facet label
-					testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCH_LBL_PRICEFILTER_XPATH"));
-					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Price facet is filtered.",testStatus);
-				
-					//Verify the FACET TEXT
-					testStatus = verifyXPath.isfound(Config.driver, "//a[@class='clnk ga' and contains(@title,'" + maxPrice + " and above')]");
-					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Facet Price Max range and above text is display.",testStatus);
+					testStatus = verifyXPath.isfound(Config.driver, "(" + Search.ITEMCOL_XPATH + ") [position()=1]", "SEARCH: Price Range filtered shows items in result.");
+					StatusLog.printlnPassedResultTrue(Config.driver,"SEARCH: Price Range filtered shows items in result.",testStatus);
 
 					 
 				} //end if
 				
 				if(filterlabel.equals("andbelow")){
-					
-					Search.clickFilterResultsBtn(Config.driver);
-					
+						
 					//Verify the Price Facet Label
-					testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCH_LBL_PRICEFILTER_XPATH"));
-					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Price facet is filtered.",testStatus);
-				
-					//Verify the FACET TEXT
-					testStatus = verifyXPath.isfound(Config.driver, "//a[@class='clnk ga' and contains(@title,'" + maxPrice + " and below')]");
-					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Price facet is filtered.",testStatus);
-					
-					StatusLog.printlnPassedResult(Config.driver,"[SEARCH] " + title);
-					 
+					testStatus = verifyXPath.isfound(Config.driver, "(" + Search.ITEMCOL_XPATH + ") [position()=1]", "SEARCH: Price Range filtered shows items in result.");
+					StatusLog.printlnPassedResultTrue(Config.driver,"SEARCH: Price Range filtered shows items in result.",testStatus);
+				 
 				} //end if
 				
 				if(filterlabel.equals("invalidrange")){
-					//Verify the Modal Error Msg
-					System.out.println(pr.getProperty("SEARCH_LBL_ERRMSGPRICERANGE_MODAL_XPATH"));
-					testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCH_LBL_ERRMSGPRICERANGE_MODAL_XPATH"));
-					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Price facet is filtered.",testStatus);
+					//Verify the Price Facet Label
+					testStatus = verifyXPath.isfound(Config.driver, "(" + Search.ITEMCOL_XPATH + ") [position()=1]", "SEARCH: Price Range filtered shows items in result.");
+					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] User cannot enter invalid Price Range. Items are still display.",testStatus);
 				
 				} //end if
 				

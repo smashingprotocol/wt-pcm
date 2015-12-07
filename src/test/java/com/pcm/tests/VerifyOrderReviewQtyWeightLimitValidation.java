@@ -10,9 +10,9 @@ import org.junit.Test;
 import com.grund.engine.Config;
 import com.pcm.includes.Cart;
 import com.pcm.includes.Checkout;
+import com.pcm.includes.Header;
 import com.pcm.includes.Homepage;
 import com.pcm.includes.PDP;
-import com.pcm.includes.Search;
 import com.pcm.includes.SignIn;
 import com.grund.utility.StatusLog;
 import com.grund.utility.TakeScreenShot;
@@ -54,32 +54,29 @@ public class VerifyOrderReviewQtyWeightLimitValidation {
 			
 			//Login user via header
 			SignIn.login(Config.driver,email,password);
-			testStatus = verifyXPath.isfound(Config.driver,pr.getProperty("HEADER_LINK_SIGNOUT_XPATH"));
-			StatusLog.printlnPassedResultTrue(Config.driver,"User is logged in (Sign out link is display)",testStatus);
+			testStatus = verifyXPath.isfoundwithWait(Config.driver, Header.LINK_SIGNOUT_XPATH,"2");
+			Assert.assertTrue("User is logged in (Sign out link is display)",testStatus);
 			
 			//Search sku and add to cart
 			Cart.clearcart(Config.driver);
-			Search.keyword(Config.driver, sku);
-			Search.addtocart(Config.driver, sku, "1");
 			
-			//get the edpno in PDP
+			//Search sku, open PDP and get edpno
 			edpno = PDP.getEDPNo(Config.driver,sku);
+			PDP.addtoCart(Config.driver);
 			
 			//Go to cart and Proceed to Checkout.
-			Cart.navigate(Config.driver);
-			itemid = Cart.getItemID(Config.driver, edpno);
+		
 			Cart.proceedtocheckout(Config.driver);
 			
-			
 			//Enter the Order Weight Limit qty
-			Checkout.updateOrderItemQTY(Config.driver, itemid, qtyorderlimit);
+			Checkout.updateOrderItemQTY(Config.driver, edpno, qtyorderlimit);
 			testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("CHECKOUT_INVALID_ERRMSG_ORQTY_XPATH"));
 			StatusLog.printlnPassedResultTrue(Config.driver,"[CHECKOUT] Validate Order Weight Limit NON APO.", testStatus);
 			
 			//Change Address to APO to validate the weight limit order.
 			Checkout.changeShipAddbyZipcode(Config.driver, pr.getProperty("CHECKOUT_ZIP_APO"));
 			
-			Checkout.updateOrderItemQTY(Config.driver, itemid, qtyapolimit);
+			Checkout.updateOrderItemQTY(Config.driver, edpno, qtyapolimit);
 			testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("CHECKOUT_INVALID_ERRMSG_ORQTY_XPATH"));
 			StatusLog.printlnPassedResultTrue(Config.driver,"[CHECKOUT] Validate Order Weight Limit APO.", testStatus);
 			

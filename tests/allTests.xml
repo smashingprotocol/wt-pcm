@@ -34,6 +34,7 @@
 		<antcall target="pdp"/>
 		<antcall target="myAccount"/>
 		<antcall target="shippingMethod"/>
+		<antcall target="basicTest"/>
 	</target>
 	
 	<target name="myAccount" if="isMyAccount">
@@ -80,7 +81,8 @@
 		<antcall target="SearchFacetFilteredGridView"/>
 		<antcall target="SearchFreeAfterRebatesItem"/>
 		<antcall target="SearchWarrantyModalQtyValidation"/>
-		<antcall target="SearchQtyValidation"/>
+		<antcall target="SearchSoldOutDisplay"/>
+		<!--<antcall target="SearchQtyValidation"/> -->
 	</target>
 		
 	<target name="shoppingCart" if="isShoppingCart">
@@ -123,6 +125,14 @@
 		<antcall target="VerifyOrderAvailableShippingMethod"/>
 		<antcall target="VerifyOrderAvailableShippingMethodAPO"/>
 		<antcall target="VerifyOrderAvailableShippingMethodHawaii"/>
+	</target>
+	
+	<target name="basicTest" if="isBasicTest">
+		<antcall target="HomeSubscribeviaHeader"/>
+		<antcall target="SearchSortByViewResults"/>
+		<antcall target="PDPNewAddtoCartModalVerification"/>
+		<antcall target="ShoppingCartAddtoCartfoLowerPriceDisplay"/>
+		<antcall target="VerifyOrderShippingFeeUpdate"/>
 	</target>
 	
   <!-- execute the JAVA format test case in JAVA -->
@@ -966,6 +976,21 @@
         	<sysproperty key="screenShotDir" value="${screenshot.dir}/${ant.project.invoked-targets}"/>
         	<sysproperty key="tableContainer" value="${basedir}/SearchQtyValidation.xls"/>
             <test name="com.pcm.tests.SearchQtyValidation" todir="../${junit.output.dir}"/>
+           	<classpath refid="pcm.classpath"/>
+   		 	<classpath refid="Maven Dependencies.libraryclasspath"/>
+        </junit>
+    </target>
+	
+	<target name="SearchSoldOutDisplay">
+    	<mkdir dir="${screenshot.dir}/${ant.project.invoked-targets}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+        	<sysproperty key="host" value="${TEST_HOST}"/>
+        	<sysproperty key="pcmHost" value="${TEST_ENV}"/>
+        	<sysproperty key="browser" value="${TEST_BROWSER}"/>
+        	<sysproperty key="screenShotDir" value="${screenshot.dir}/${ant.project.invoked-targets}"/>
+        	<sysproperty key="tableContainer" value="${basedir}/SearchSoldOutDisplay.xls"/>
+            <test name="com.pcm.tests.SearchSoldOutDisplay" todir="../${junit.output.dir}"/>
            	<classpath refid="pcm.classpath"/>
    		 	<classpath refid="Maven Dependencies.libraryclasspath"/>
         </junit>

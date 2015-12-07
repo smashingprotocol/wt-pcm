@@ -10,9 +10,9 @@ import org.junit.Test;
 import com.grund.engine.Config;
 import com.pcm.includes.Cart;
 import com.pcm.includes.Checkout;
-import com.pcm.includes.Header;
 import com.pcm.includes.Homepage;
 import com.pcm.includes.Search;
+import com.pcm.includes.SignIn;
 import com.grund.request.ClickElement;
 import com.grund.utility.StatusLog;
 import com.grund.utility.TakeScreenShot;
@@ -46,9 +46,8 @@ public class VerifyOrderChangeAddressTaxESD {
 			
 			password = pr.getProperty("CHECKOUT_USER_PASSWORD");
 			
-			//Login user via header
-			Header.signIn(Config.driver, email, password);
-			
+			//Login user via my account.
+			SignIn.login(Config.driver, email, password);;
 			
 			//Clear the cart first.
 			Cart.clearcart(Config.driver);
@@ -56,12 +55,11 @@ public class VerifyOrderChangeAddressTaxESD {
 			//Search sku and add to cart
 			Search.keyword(Config.driver,sku);
 			Search.addtocart(Config.driver,sku,qty);
-			System.out.println("[CART] " + Config.driver.getTitle());
+			Cart.navigate(Config.driver);
 			
-			//Go to Shopping cart and Proceed to Checkout
-			ClickElement.byXPath(Config.driver,pr.getProperty("CART_LINK_XPATH"));
-			System.out.println("[CART] " + Config.driver.getTitle());
-			verifyXPath.isfound(Config.driver, "//input[@class='cartQty cart-qty']");
+			testStatus = Cart.verifySkuinCart(Config.driver, sku); //Verify Estimated Sales Tax amount is 0.
+			StatusLog.printlnPassedResultTrue(Config.driver,"[VERIFY] Item in cart.", testStatus);
+			
 			ClickElement.byXPath(Config.driver,pr.getProperty("CART_BTN_CHECKOUT_XPATH"));
 			
 			//Change the Address in Verify Order

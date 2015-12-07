@@ -69,11 +69,11 @@ public class SearchRelatedContentSearchNotDisplay {
 				if(isContent.equals("false")){
 					
 					//Verify the Related Search content button is not  displayed.
-					testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCH_BTN_RELATEDCONTENT_XPATH"));
+					testStatus = verifyXPath.isfound(Config.driver, Search.BTN_RELATEDCONTENT_XPATH);
 					StatusLog.printlnPassedResultFalse(Config.driver,"[SEARCH] Related Search Content is not displayed.",testStatus);
 				
 					//Related Content search is not displayed
-					testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCH_DIV_RELATEDCONTENT_XPATH"));
+					testStatus = verifyXPath.isfound(Config.driver, Search.DIV_RELATEDCONTENT_XPATH);
 					StatusLog.printlnPassedResultFalse(Config.driver,"[SEARCH] Related Search Content is not displayed.",testStatus);
 					 
 				} //end if
@@ -81,11 +81,11 @@ public class SearchRelatedContentSearchNotDisplay {
 				if(isContent.equals("true")){
 										
 					//Verify the Related Search content button is displayed.
-					testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCH_BTN_RELATEDCONTENT_XPATH"));
-					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Related Search Content is not displayed.",testStatus);
+					testStatus = verifyXPath.isfound(Config.driver, Search.BTN_RELATEDCONTENT_XPATH);
+					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Related Search Content Button is not displayed.",testStatus);
 				
 					//Verify the Related Search content is displayed.
-					testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCH_DIV_RELATEDCONTENT_XPATH"));
+					testStatus = verifyXPath.isfound(Config.driver, Search.DIV_RELATEDCONTENT_XPATH);
 					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Related Search Content is not displayed.",testStatus);
 					 
 				} //end if

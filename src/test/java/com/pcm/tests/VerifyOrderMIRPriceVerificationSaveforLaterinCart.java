@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import com.grund.engine.Config;
 import com.pcm.includes.Cart;
+import com.pcm.includes.Header;
 import com.pcm.includes.Homepage;
 import com.pcm.includes.PDP;
 import com.pcm.includes.Search;
@@ -52,7 +53,7 @@ public class VerifyOrderMIRPriceVerificationSaveforLaterinCart {
 			
 			//Login user via header
 			SignIn.login(Config.driver,email,password);
-			testStatus = verifyXPath.isfound(Config.driver,pr.getProperty("HEADER_LINK_SIGNOUT_XPATH"));
+			testStatus = verifyXPath.isfoundwithWait(Config.driver, Header.LINK_SIGNOUT_XPATH,"2");
 			Assert.assertTrue("User is logged in (Sign out link is display)",testStatus);
 			
 			//Clear the cart first.
@@ -61,7 +62,6 @@ public class VerifyOrderMIRPriceVerificationSaveforLaterinCart {
 			//Search for the Sku to checkout and add to cart
 			Search.keyword(Config.driver,sku);
 			Search.addtocart(Config.driver,sku,qty);
-			System.out.println("[CART] " + Config.driver.getTitle());
 			
 			//Click Item Description to go to PDP and get edpno
 			ClickElement.byXPath(Config.driver, "(" + pr.getProperty("SEARCH_LINK_PDP_XPATH") + ") [position()=1]");

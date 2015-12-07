@@ -71,17 +71,13 @@ public class SearchVerifyFreeShippingItem {
 				Search.keyword(Config.driver, sku);
 				
 				if(Boolean.valueOf(withIcon)){
-					//Verify the Free Shipping Text
-					testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCH_LABEL_FREESHIPTEXT_XPATH"));
-					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Free Shipping Text is display.",testStatus);
-					
 					//Verify the Free Shipping ICON
-					testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCH_LABEL_FREESHIPICON_XPATH"));
-					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Free Shipping Text icon is display.",testStatus);
+					testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCHNEW_LABEL_FREEGROUNDSHIP_XPATH"));
+					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Free Ground Shipping Text is display.",testStatus);
 					
 				} else{
 					//Verify the Free Shipping Text
-					testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCH_LABEL_FREESHIPTEXT_XPATH"));
+					testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCHNEW_LABEL_FREESHIPTEXT_XPATH"));
 					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Free Shipping Text is display.",testStatus);
 				}
 				

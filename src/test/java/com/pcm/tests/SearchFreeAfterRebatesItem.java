@@ -70,14 +70,29 @@ public class SearchFreeAfterRebatesItem {
 				
 				if(Boolean.valueOf(withSlashed)){
 					//Verify the SLASHED PRICE
-					testStatus = verifyXPath.isfound(Config.driver, "//span[@class='lprice str' and contains(text(),'" + priceStrike + "')]");
+					testStatus = verifyXPath.isfound(Config.driver, "//span[@class='lprice prod-lprice str' and contains(text(),'" + priceStrike + "')]");
 					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Expected Strikethrough Price of " + priceStrike + " is display.",testStatus);
 					
 					//Verify the Free after rebate
-					testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCH_LABEL_FREEAFTERREBATES_XPATH"));
-					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Free after rebate Text is display.",testStatus);
+					testStatus = verifyXPath.isfound(Config.driver, Search.IMG_FREEAFTERREBATES_XPATH);
+					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Free after rebate violator is display.",testStatus);
 					
 				} //end if
+				
+				if(Boolean.valueOf(withMIR)){
+					
+					//Verify the Search New Instant Savings text
+					testStatus = verifyXPath.isfound(Config.driver, Search.LABEL_MAILINSAVINGS_XPATH);
+					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Mail-in Savings text is display.",testStatus);
+					
+					
+				} else {
+					//Verify the Search New Instant Savings text
+					testStatus = verifyXPath.isfound(Config.driver, Search.LABEL_INSTANTSAVINGS_XPATH);
+					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Instant Savings text is display.",testStatus);
+				} //end if
+				
+				
 			} //end for
 			
 			//Overall Test Result

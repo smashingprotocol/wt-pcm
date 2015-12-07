@@ -68,13 +68,12 @@ public class SearchFacetFilteredGridView {
 					Search.keyword(Config.driver, keyword);
 					Search.setGridView(Config.driver);
 					Search.setFacetPriceRange(Config.driver,minPrice,maxPrice);
-					Search.clickFilterResultsBtn(Config.driver);
 					
 					//Verify the Price Facet Label
 					testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCH_LBL_PRICEFILTER_XPATH"));
-					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Price facet is filtered.",testStatus);
+					StatusLog.printlnPassedResultFalse(Config.driver,"[SEARCH] Price facet is filtered is no longer display in filtered group.",testStatus);
 					
-					testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCH_DIV_GRIDVIEW_XPATH"));
+					testStatus = verifyXPath.isfound(Config.driver, Search.DIV_GRIDVIEW_XPATH);
 					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Results still in Grid View after Filter Results.",testStatus);
 				
 			} //end for i

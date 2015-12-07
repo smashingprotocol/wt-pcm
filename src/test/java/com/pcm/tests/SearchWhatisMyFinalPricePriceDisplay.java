@@ -71,24 +71,24 @@ public class SearchWhatisMyFinalPricePriceDisplay {
 				testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCH_BTN_CLICKHERE_XPATH"));
 				StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Expected Click Here button is display.",testStatus);
 				
-				//Verify the What is My Final Price text.
+				//Verify the What is My Final Price violator.
 				testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCH_IMG_WHATISMYFINALPRICE_XPATH"));
 				StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] What is My Final Price item image is display.",testStatus);
 				
 				//Verify the Strikethrough Price in Search and UPP Modal
 				if(Boolean.valueOf(withSlashed)){
-					testStatus = verifyXPath.isfound(Config.driver, "//span[@class='lprice str prod-lprice' and contains(text(),'" + unitPrice + "')]");
+					testStatus = verifyXPath.isfound(Config.driver, "//span[@class='lprice prod-lprice str' and contains(text(),'" + unitPrice + "')]");
 					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Expected Strikethrough Price " + unitPrice + " is display.",testStatus);
 					
 					//Modal List Slashed Price verification
 					ClickElement.byXPath(Config.driver, pr.getProperty("SEARCH_BTN_CLICKHERE_XPATH"));
 					
-					testStatus = verifyXPath.isfound(Config.driver, "//span[@class='strike-through' and contains(text(),'" + unitPrice + "')]");
+					testStatus = verifyXPath.isfound(Config.driver, "//span[@class='strike' and contains(text(),'" + unitPrice + "')]");
 					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Expected Strikethrough Price " + unitPrice + " is display in the UPP Modal.",testStatus);
 					StatusLog.printlnPassedResult(Config.driver,"[SEARCH] UPP MODAL" + title);
 					
 					//Close modal
-					ClickElement.byXPath(Config.driver, pr.getProperty("SEARCH_BTN_CLOSEUPPMODAL_XPATH"));
+					ClickElement.byXPath(Config.driver, pr.getProperty("SEARCHNEW_BTN_CLOSEUPPMODAL_XPATH"));
 					
 				} else{
 					//No slashed
@@ -98,18 +98,22 @@ public class SearchWhatisMyFinalPricePriceDisplay {
 					//Modal List No Slashed Price verification
 					ClickElement.byXPath(Config.driver, pr.getProperty("SEARCH_BTN_CLICKHERE_XPATH"));
 					
-					testStatus = verifyXPath.isfound(Config.driver, "//span[@class='sub-price' and contains(text(),'" + unitPrice + "')]");
+					testStatus = verifyXPath.isfound(Config.driver, "//div[@class='list-price']//span[@class='' and contains(text(),'" + unitPrice + "')]");
 					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Expected No slashed Price " + unitPrice + " is display in the UPP Modal.",testStatus);
 					StatusLog.printlnPassedResult(Config.driver,"[SEARCH] UPP MODAL" + title);
 					
 					//Close modal
-					ClickElement.byXPath(Config.driver, pr.getProperty("SEARCH_BTN_CLOSEUPPMODAL_XPATH"));
+					ClickElement.byXPath(Config.driver, pr.getProperty("SEARCHNEW_BTN_CLOSEUPPMODAL_XPATH"));
 						
 				}
 				
-				//Verify the What is My Final Price text
+				//Verify the What is My Final Price text is no longer display on New Search
 				testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCH_LABEL_WHATISMYFINALPRICE_XPATH"));
-				StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Expected Add to cart for Lower Price text is display.",testStatus);
+				StatusLog.printlnPassedResultFalse(Config.driver,"[SEARCH] Expected Add to cart for Lower Price text is display.",testStatus);
+				
+				testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCHNEW_LABEL_INSTANTSAVINGS_XPATH"));
+				StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Expected Instant Savings text is display.",testStatus);
+				
 				
 				
 			} //end for i

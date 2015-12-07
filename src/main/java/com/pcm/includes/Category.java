@@ -15,12 +15,8 @@ public class Category {
 	public static Properties properties;
 	
 	public static void gotoCategoryviaHeader(WebDriver driver, String category) throws Exception {
-		
-		FileReader reader = new FileReader("pcm.properties");
-		properties = new Properties();
-		properties.load(reader);
-		
-		ClickElement.byXPath(driver, properties.getProperty("HEADER_MENU_PRODUCTS_XPATH"));
+		System.out.println("[STEP] UNDER PRODUCT MENU, OPEN A CATEGORY");
+		ClickElement.byXPath(driver, Header.MENU_PRODUCTS_XPATH);
 		ClickElement.byXPath(driver, "//a[@title='" + category + "']");
 		
 	}
@@ -30,7 +26,7 @@ public class Category {
 		FileReader reader = new FileReader("pcm.properties");
 		properties = new Properties();
 		properties.load(reader);
-		
+		System.out.println("[STEP] IN CATEGORY PAGE, CLICK CLEARANCE OFFER LINK.");
 		ClickElement.byXPath(driver, properties.getProperty("CATEGORY_LINK_CLEARANCEOFFER_XPATH"));
 	}
 
@@ -53,7 +49,7 @@ public class Category {
 		FileReader reader = new FileReader("pcm.properties");
 		properties = new Properties();
 		properties.load(reader);
-		
+		System.out.println("[STEP] IN CATEGORY PAGE, CLICK REFURBISHED OFFER LINK.");
 		ClickElement.byXPath(driver, properties.getProperty("CATEGORY_LINK_REFURBISHEDOFFER_XPATH"));
 		
 	}
@@ -78,7 +74,7 @@ public class Category {
 		FileReader reader = new FileReader("pcm.properties");
 		properties = new Properties();
 		properties.load(reader);
-		
+		System.out.println("[STEP] IN CATEGORY PAGE, CLICK OPEN BOX OFFER LINK.");
 		ClickElement.byXPath(driver, properties.getProperty("CATEGORY_LINK_OPENBOXOFFER_XPATH"));
 		
 		

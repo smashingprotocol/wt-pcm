@@ -34,6 +34,9 @@ public class SearchOmnitureProperties {
 	public String cartOrderTotal;
 	public String title;
 	
+	public static final String SEARCH_SCRIPTS_OMNIEVENTS_XPATH="//script[contains(text(),'s.events = \"event1\"')]";
+	public static final String SEARCH_SCRIPTS_OMNIEVAR3_XPATH="//script[contains(text(),'s.eVar3 = \"search\"')]";
+	
 	
 	Properties sys = System.getProperties();
 	
@@ -52,15 +55,15 @@ public class SearchOmnitureProperties {
 			Search.keyword(Config.driver, keyword);
 	
 			//Verify the Omniture script s.events has a value
-			testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCH_SCRIPTS_OMNIEVENTS_XPATH"));
+			testStatus = verifyXPath.isfound(Config.driver, SEARCH_SCRIPTS_OMNIEVENTS_XPATH);
 			StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Omniture s.events has a value.",testStatus);
 		
 			//Verify the Omniture script s.eVar3 has a value
-			testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCH_SCRIPTS_OMNIEVAR3_XPATH"));
+			testStatus = verifyXPath.isfound(Config.driver, SEARCH_SCRIPTS_OMNIEVAR3_XPATH);
 			StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Omniture s.eVar3 has a value.",testStatus);
 		
 			//Verify the Omniture script s.eVar1 has a value
-			testStatus = verifyXPath.isfound(Config.driver, "//script[contains(text(),'s.eVar1=\"" + keyword + "\"')]");
+			testStatus = verifyXPath.isfound(Config.driver, "//script[contains(text(),'s.eVar1 = \"" + keyword + "\"')]");
 			StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Omniture s.eVar1 has a value.",testStatus);
 		
 			//Overall Test Result

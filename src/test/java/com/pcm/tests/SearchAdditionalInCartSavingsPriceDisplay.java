@@ -72,12 +72,12 @@ public class SearchAdditionalInCartSavingsPriceDisplay {
 				Search.keyword(Config.driver, sku);
 				
 				//Verify the Additional in-cart Savings in the imaeg
-				testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCH_IMG_ADDINCART_XPATH"));
+				testStatus = verifyXPath.isfound(Config.driver, Search.IMG_ADDINCART_XPATH);
 				StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Additional in-cart savings in item image is display.",testStatus);
 				
 				//Verify the Strikethrough Price
 				if(Boolean.valueOf(withSlashed)){
-					testStatus = verifyXPath.isfound(Config.driver, "//span[@class='lprice str prod-lprice' and contains(text(),'" + priceStrike + "')]");
+					testStatus = verifyXPath.isfound(Config.driver, "//span[@class='lprice prod-lprice str' and contains(text(),'" + priceStrike + "')]");
 					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Expected Strikethrough Price " + priceStrike + " is display.",testStatus);
 				} else{
 					//No slashed
@@ -85,13 +85,23 @@ public class SearchAdditionalInCartSavingsPriceDisplay {
 					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Expected No slashed Price " + priceStrike + " is display.",testStatus);
 				}
 				
-				//Verify the Additional in-cart savings text
+				//Verify the Additional in-cart savings text is no longer display
 				testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCH_LABEL_ADDINCART_XPATH"));
-				StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Expected Additional in-cart text is display.",testStatus);
+				StatusLog.printlnPassedResultFalse(Config.driver,"[SEARCH] Additional in-cart text is not display.",testStatus);
 				
-				//Verify the Click Here Button display
+				//Verify the Click Here Button display is no longer display
 				testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCH_BTN_CLICKHERE_XPATH"));
-				StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Expected Click Here button is display.",testStatus);
+				StatusLog.printlnPassedResultFalse(Config.driver,"[SEARCH] Click Here button is not display.",testStatus);
+				
+				//Verify the Search New Instant Savings text
+				testStatus = verifyXPath.isfound(Config.driver, Search.LABEL_INSTANTSAVINGS_XPATH);
+				StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Instant Savings text is display.",testStatus);
+				
+				
+				//Verify the Search New Add to Cart Button display
+				testStatus = verifyXPath.isfound(Config.driver, Search.BTN_ADDINCART_XPATH);
+				StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Expected Add to Cart button is display.",testStatus);
+				
 				
 			} //end for i
 			

@@ -10,6 +10,7 @@ import org.junit.Test;
 import com.grund.engine.Config;
 import com.pcm.includes.Category;
 import com.pcm.includes.Homepage;
+import com.pcm.includes.Search;
 import com.grund.request.ClickElement;
 import com.grund.utility.StatusLog;
 import com.grund.utility.TableContainer;
@@ -81,19 +82,19 @@ public class SearchCategoryPagetoSearchPage {
 					//Verify the Item list count.
 					
 					if(Integer.valueOf(catCount) < 25){
-						testStatus = verifyXPath.isfound(Config.driver, "//div[@class='num']//span[@class='ottl' and text()='" + catCount + "']");
+						testStatus = verifyXPath.isfound(Config.driver, "(//div[@class='pager-info']//span[@class='totalPage' and text()='" + catCount + "']) [position()=1]");
 						StatusLog.printlnPassedResultTrue(Config.driver,"[TESTCASE] Category count matches the search last page label.",testStatus);
 						
 						//Verify the Item count.
-						testStatus = verifyXPath.isfound(Config.driver, "(" + pr.getProperty("SEARCH_ITEMCOL_XPATH") + ") [position()=" + catCount + "]");
+						testStatus = verifyXPath.isfound(Config.driver, "(" + Search.ITEMCOL_XPATH + ") [position()=" + catCount + "]");
 						StatusLog.printlnPassedResultTrue(Config.driver,"[TESTCASE] Category count matches the count of items in search.",testStatus);
 					} //end if 
 					
 					//Moved to next page if items are more than 25
 					if(Integer.valueOf(catCount) > 25){
-						ClickElement.byXPath(Config.driver, pr.getProperty("SEARCH_BTN_NEXTPAGE_XPATH"));
+						ClickElement.byXPath(Config.driver, Search.BTN_NEXTPAGE_XPATH);
 						//Verify next page is not empty.
-						testStatus = verifyXPath.isfound(Config.driver, "(" + pr.getProperty("SEARCH_ITEMCOL_XPATH") + ") [position()=1]");
+						testStatus = verifyXPath.isfound(Config.driver, "(" + Search.ITEMCOL_XPATH + ") [position()=1]");
 						StatusLog.printlnPassedResultTrue(Config.driver,"[TESTCASE] Next page shows results.",testStatus);
 					}
 				

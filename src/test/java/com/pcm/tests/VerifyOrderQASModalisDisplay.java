@@ -19,6 +19,7 @@ import com.grund.request.ClickElement;
 import com.grund.utility.StatusLog;
 import com.grund.utility.TableContainer;
 import com.grund.utility.TakeScreenShot;
+import com.grund.utility.Wait;
 import com.grund.verify.verifyXPath;
 
 public class VerifyOrderQASModalisDisplay {
@@ -72,6 +73,7 @@ public class VerifyOrderQASModalisDisplay {
 			//Go to cart and Proceed to checkout.
 			Cart.navigate(Config.driver);
 			//Get the Cart Order Total
+			System.out.println("[STEP] IN CART, GET THE ORDER TOTAL.");
 			cartOrderTotal = verifyXPath.getText(Config.driver,pr.getProperty("CART_LABEL_ORDERTOTAL_XPATH"));
 			cartOrderTotal = cartOrderTotal.replaceAll("[$, ]", "");
 			
@@ -102,7 +104,9 @@ public class VerifyOrderQASModalisDisplay {
 			
 			Checkout.enterNewCustomerBillAdd(Config.driver,billFields);
 			ClickElement.byXPath(Config.driver, pr.getProperty("CHECKOUT_CHECKBOX_SAMEASBILL_XPATH"));
+			Wait.sleep("2");
 			
+			System.out.println("[STEP] IN VERIFY ORDER, COMPARE THE CART ORDER TOTAL TO THE ORDER REVIEW TOTAL.");
 			verifyOrderSubtTotal = verifyXPath.getText(Config.driver, pr.getProperty("CHECKOUT_LABEL_ORSUBTOTAL_XPATH")).replaceAll("[$, ]", "");
 			Assert.assertEquals(verifyOrderSubtTotal,cartOrderTotal);
 			

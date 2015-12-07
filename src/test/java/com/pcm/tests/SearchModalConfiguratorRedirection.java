@@ -14,6 +14,7 @@ import com.grund.utility.StatusLog;
 import com.grund.utility.TableContainer;
 import com.grund.utility.TakeScreenShot;
 import com.grund.verify.VerifyDocumentURL;
+import com.grund.verify.VerifyText;
 import com.grund.verify.verifyXPath;
 
 
@@ -57,13 +58,19 @@ public class SearchModalConfiguratorRedirection {
 				navlink = TableContainer.getCellValue(i, "navlink"); 
 				title = TableContainer.getCellValue(i, "title"); 
 				
-
+				Search.keyword(Config.driver, sku);
+				
 				if(btnAction.equals("configure")){
 					
-					Search.ctoModalClickConfigureItems(Config.driver,sku,qty);
+					Search.clickBuyNowCustomize(Config.driver,sku);
 					
 					testStatus = VerifyDocumentURL.containsText(Config.driver,navlink);
-					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] CTO Modal redirect to Configurator Page.", testStatus);
+					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Buy Now/Customize button redirects to Configurator page.", testStatus);
+					
+					testStatus = VerifyText.isfound(Config.driver, "No configuration found.", "CONFIGURATOR: Verify if No Configuration Found is not display");
+					StatusLog.printlnPassedResultFalse(Config.driver,"[CONFIGURATOR] No configuration found text should not display", testStatus);
+					
+					
 				} //end if
 				
 				if(btnAction.equals("cart")){

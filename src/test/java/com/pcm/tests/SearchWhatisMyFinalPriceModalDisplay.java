@@ -8,8 +8,10 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.grund.engine.Config;
+import com.pcm.includes.Cart;
 import com.pcm.includes.Homepage;
 import com.pcm.includes.Search;
+import com.grund.request.ClickElement;
 import com.grund.utility.StatusLog;
 import com.grund.utility.TakeScreenShot;
 import com.grund.verify.verifyXPath;
@@ -51,14 +53,17 @@ public class SearchWhatisMyFinalPriceModalDisplay {
 			email = pr.getProperty("SEARCH_EMAIL_WHATFINALPRICE");
 			
 			Search.uppSubmitEmailFinalPrice(Config.driver,skuWithSlashed,email);
-			testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCH_UPP_UPPSUCCESSMSG_XPATH"));
+			testStatus = verifyXPath.isfound(Config.driver, Search.UPP_UPPSUCCESSMSG_XPATH);
 			StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Able to submit a UPP Final Price to an email.", testStatus);
 			
-			StatusLog.printlnPassedResult(Config.driver,"[SEARCH] Able to submit a UPP Final Price to an email.");
+			ClickElement.byXPath(Config.driver, Search.BTN_MODAL_CONTINUESHOPPING_XPATH, "SEARCH: Click Continue Shopping button.");
+			
 			
 			Search.uppAddtoCart(Config.driver,skuWithSlashed);
-			testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCH_BTN_MODALCONTINUESHOPPING_XPATH"));
-			StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Able to add to cart in UPP Modal.", testStatus);
+
+			//testStatus = verifyXPath.isfound(Config.driver, "//div[@class='cartItemsCon']//td[@class='cartinfotd']//a[contains(@href,'" + skuWithSlashed + "')]");
+			testStatus = Cart.verifySkuinCart(Config.driver, skuWithSlashed);
+			StatusLog.printlnPassedResultTrue(Config.driver,"[CART] Item is added in cart via Search UPP Modal.", testStatus);
 			
 			//Overall Test Result
 			Assert.assertTrue(StatusLog.errMsg, StatusLog.tcStatus);

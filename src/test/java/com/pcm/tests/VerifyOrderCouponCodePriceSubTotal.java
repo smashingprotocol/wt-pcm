@@ -13,6 +13,7 @@ import com.pcm.includes.Homepage;
 import com.grund.request.ClickElement;
 import com.grund.utility.StatusLog;
 import com.grund.utility.TakeScreenShot;
+import com.grund.utility.Wait;
 import com.grund.verify.verifyXPath;
 
 
@@ -62,8 +63,8 @@ public class VerifyOrderCouponCodePriceSubTotal {
 			cartOrderTotal = cartOrderTotal.replace("$","");
 			
 			Cart.couponCodeSubmit(Config.driver, couponCode);
-			Long wait = Long.parseLong(pr.getProperty("WAIT_SEC"));
-			Thread.sleep(wait);
+			Wait.sleep("3");
+			
 			
 			//Store the Cart Order Total after Coupon
 			cartOrderTotalwithCoupon = verifyXPath.getText(Config.driver,pr.getProperty("CART_LABEL_ORDERTOTAL_XPATH"));

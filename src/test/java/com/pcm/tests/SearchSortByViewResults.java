@@ -66,13 +66,9 @@ public class SearchSortByViewResults {
 					
 					Search.sortByLowestPriceFirst(Config.driver);
 					Search.selectViewBy(Config.driver,view);
-					
-					//Verify the Sort By selected.
-					testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCH_SELECT_LOWESTPRICESELECTED_XPATH"));
-					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Sort By Lowest Price.",testStatus);
-					
+	
 					//Verify the Item count.
-					testStatus = verifyXPath.isfound(Config.driver, "(" + pr.getProperty("SEARCH_ITEMCOL_XPATH") + ") [position()=" + view + "]");
+					testStatus = verifyXPath.isfound(Config.driver, "(" + Search.ITEMCOL_XPATH + ") [position()=" + view + "]");
 					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Item count matches the view.",testStatus);
 										
 				} //end if
@@ -82,27 +78,19 @@ public class SearchSortByViewResults {
 					Search.sortByHighestPriceFirst(Config.driver);
 					Search.selectViewBy(Config.driver,view);
 					
-					//Verify the Sort By selected.
-					testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCH_SELECT_HIGHESTPRICESELECTED_XPATH"));
-					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Sort By Lowest Price.",testStatus);
-					
 					//Verify the Item count.
-					testStatus = verifyXPath.isfound(Config.driver, "(" + pr.getProperty("SEARCH_ITEMCOL_XPATH") + ") [position()=" + view + "]");
+					testStatus = verifyXPath.isfound(Config.driver, "(" + Search.ITEMCOL_XPATH + ") [position()=" + view + "]");
 					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Item count matches the view.",testStatus);
 										
 				} //end if
 				
 				if(sortby.equals("bestmatch")){
 					
-					Search.sortByBestMatch(Config.driver);
 					Search.selectViewBy(Config.driver,view);
-					
-					//Verify the Sort By selected.
-					testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCH_SELECT_BESTMATCHSELECTED_XPATH"));
-					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Sort By Best Match.",testStatus);
+					Search.sortByBestMatch(Config.driver);
 					
 					//Verify the Item count.
-					testStatus = verifyXPath.isfound(Config.driver, "(" + pr.getProperty("SEARCH_ITEMCOL_XPATH") + ") [position()=" + view + "]");
+					testStatus = verifyXPath.isfound(Config.driver, "(" + Search.ITEMCOL_XPATH + ") [position()=" + view + "]");
 					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Item count matches the view count.",testStatus);
 										
 				} //end if

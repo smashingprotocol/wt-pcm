@@ -11,7 +11,6 @@ import com.grund.engine.Config;
 import com.pcm.includes.Cart;
 import com.pcm.includes.Homepage;
 import com.pcm.includes.Search;
-import com.grund.request.ClickElement;
 import com.grund.utility.StatusLog;
 import com.grund.utility.TakeScreenShot;
 import com.grund.verify.verifyXPath;
@@ -48,11 +47,7 @@ public class VerifyOrderSavedCreditCard {
 			//Search for the Sku to checkout and add to cart
 			Search.keyword(Config.driver,sku);
 			Search.addtocart(Config.driver,sku,qty);
-			System.out.println("[CART] " + Config.driver.getTitle());
-			
-			ClickElement.byXPath(Config.driver,pr.getProperty("CART_LINK_XPATH"));
-			System.out.println("[CART] " + Config.driver.getTitle());
-			verifyXPath.isfound(Config.driver, "//input[@class='cartQty cart-qty']"); //Verify the shopping cart item quantity field.
+			Cart.navigate(Config.driver);
 			
 			Cart.existingLogin(Config.driver, email, password); //Login user in cart.
 			

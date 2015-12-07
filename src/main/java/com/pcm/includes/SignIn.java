@@ -28,9 +28,9 @@ public class SignIn {
 			properties.load(reader);
 			
 			//Check first if user is logged in, click sign out.
-			if (login = verifyXPath.isfound(driver,properties.getProperty("HEADER_LINK_SIGNOUT_XPATH"))){
+			if (login = verifyXPath.isfound(driver,Header.LINK_SIGNOUT_XPATH)){
 				System.out.println("[PCM] Logging out user...");
-				ClickElement.byXPath(driver, properties.getProperty("HEADER_LINK_SIGNOUT_XPATH"));
+				ClickElement.byXPath(driver, Header.LINK_SIGNOUT_XPATH);
 			}
 			
 			//ClickElement.byXPath(driver, properties.getProperty("HEADER_LINK_SIGNIN_XPATH"));
@@ -53,23 +53,12 @@ public class SignIn {
 	}
 
 	public static void logout(WebDriver driver) throws Exception{
-		// TODO Auto-generated method stub
-		FileReader reader = new FileReader("pcm.properties");
-		properties = new Properties();
 		
-		try {
-			properties.load(reader);
+		System.out.println("[STEP] LOGGED OUT USER");
+		if (verifyXPath.isfound(driver,Header.LINK_USER_XPATH)){
 			
-			//Check first if user is logged in, click sign out.
-			if (verifyXPath.isfound(driver,properties.getProperty("HEADER_LINK_USER_XPATH"))){
-				
-				ClickElement.byXPath(driver, properties.getProperty("HEADER_LINK_USER_XPATH"));
-				ClickElement.byXPath(driver, properties.getProperty("HEADER_LINK_SIGNOUT_XPATH"));
-			}
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			ClickElement.byXPath(driver, Header.LINK_USER_XPATH);
+			ClickElement.byXPath(driver, Header.LINK_SIGNOUT_XPATH);
 		}
 		
 	}

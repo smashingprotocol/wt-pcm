@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import com.grund.engine.Config;
 import com.pcm.includes.Cart;
+import com.pcm.includes.Header;
 import com.pcm.includes.Homepage;
 import com.pcm.includes.Search;
 import com.pcm.includes.SignIn;
@@ -48,7 +49,8 @@ public class VerifyOrderRecyclingFee {
 			
 			//Login user via header
 			SignIn.login(Config.driver,email,password);
-			StatusLog.printlnPassedResultTrue(Config.driver,"User is logged in (Sign out link is display)", verifyXPath.isfound(Config.driver,pr.getProperty("HEADER_LINK_SIGNOUT_XPATH")));
+			boolean testStatus = verifyXPath.isfoundwithWait(Config.driver, Header.LINK_SIGNOUT_XPATH,"2");
+			Assert.assertTrue("User is logged in (Sign out link is display)",testStatus);
 			
 			//Clear the cart first.
 			Cart.clearcart(Config.driver);
@@ -56,14 +58,10 @@ public class VerifyOrderRecyclingFee {
 			//Search for the Sku to checkout and add to cart
 			Search.keyword(Config.driver,sku);
 			Search.addtocart(Config.driver,sku,qty);
-			System.out.println("[CART] " + Config.driver.getTitle());
-			
-			ClickElement.byXPath(Config.driver,pr.getProperty("CART_LINK_XPATH"));
-			System.out.println("[CART] " + Config.driver.getTitle());
-			verifyXPath.isfound(Config.driver, "//input[@class='cartQty cart-qty']");
+			Cart.navigate(Config.driver);
+			Cart.verifySkuinCart(Config.driver, sku);
 			ClickElement.byXPath(Config.driver,pr.getProperty("CART_BTN_CHECKOUT_XPATH"));
-			
-			
+		
 			StatusLog.printlnPassedResultTrue(Config.driver,"CA Recycling Fee label is found at Verify Order", verifyXPath.isfound(Config.driver,pr.getProperty("CHECKOUT_LABEL_RECYCFEE_XPATH")));
 			
 			//Overall Test Result

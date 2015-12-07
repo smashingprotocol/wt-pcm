@@ -10,6 +10,7 @@ import org.junit.Test;
 import com.grund.engine.Config;
 import com.pcm.includes.Cart;
 import com.pcm.includes.Checkout;
+import com.pcm.includes.Header;
 import com.pcm.includes.Homepage;
 import com.pcm.includes.Search;
 import com.pcm.includes.SignIn;
@@ -46,7 +47,8 @@ public class VerifyOrderChangeAddressTax {
 			
 			//Login user via header
 			SignIn.login(Config.driver,email,password);
-			Assert.assertTrue("User is logged in (Sign out link is display)", verifyXPath.isfound(Config.driver,pr.getProperty("HEADER_LINK_SIGNOUT_XPATH")));
+			testStatus = verifyXPath.isfoundwithWait(Config.driver, Header.LINK_SIGNOUT_XPATH,"2");
+			StatusLog.printlnPassedResultTrue(Config.driver,"[VERIFY] User able to login.",testStatus);
 			
 			//Clear the cart first.
 			Cart.clearcart(Config.driver);
@@ -54,10 +56,13 @@ public class VerifyOrderChangeAddressTax {
 			//Search sku and add to cart
 			Search.keyword(Config.driver,sku);
 			Search.addtocart(Config.driver,sku,qty);
-			System.out.println("[CART] " + Config.driver.getTitle());
 			
 			//Navigate shopping cart
-			Cart.navigate(Config.driver); 
+			Cart.navigate(Config.driver);
+			
+			testStatus = Cart.verifySkuinCart(Config.driver, sku);
+			StatusLog.printlnPassedResultTrue(Config.driver,"[CART] Verify item is added in cart.",testStatus);
+			
 			Cart.proceedtocheckout(Config.driver);
 			
 			

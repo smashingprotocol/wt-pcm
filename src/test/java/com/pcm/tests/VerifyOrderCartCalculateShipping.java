@@ -10,6 +10,7 @@ import org.junit.Test;
 import com.grund.engine.Config;
 import com.pcm.includes.Cart;
 import com.pcm.includes.Checkout;
+import com.pcm.includes.Header;
 import com.pcm.includes.Homepage;
 import com.pcm.includes.Search;
 import com.pcm.includes.SignIn;
@@ -52,7 +53,7 @@ public class VerifyOrderCartCalculateShipping {
 			
 			//Login user via header
 			SignIn.login(Config.driver,email,password);
-			testStatus = verifyXPath.isfound(Config.driver,pr.getProperty("HEADER_LINK_SIGNOUT_XPATH"));
+			testStatus = verifyXPath.isfoundwithWait(Config.driver, Header.LINK_SIGNOUT_XPATH,"2");
 			StatusLog.printlnPassedResultTrue(Config.driver,"User is logged in (Sign out link is display)",testStatus);
 			
 			//Search SKU and Add to Cart.

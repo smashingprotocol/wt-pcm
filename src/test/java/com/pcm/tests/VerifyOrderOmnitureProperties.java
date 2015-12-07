@@ -50,11 +50,7 @@ public class VerifyOrderOmnitureProperties {
 			//Search for the Sku to checkout and add to cart
 			Search.keyword(Config.driver,sku);
 			Search.addtocart(Config.driver,sku,qty);
-			System.out.println("[CART] " + Config.driver.getTitle());
-			
-			ClickElement.byXPath(Config.driver,pr.getProperty("CART_LINK_XPATH"));
-			System.out.println("[CART] " + Config.driver.getTitle());
-			verifyXPath.isfound(Config.driver, "//input[@class='cartQty cart-qty']");
+			Cart.navigate(Config.driver);
 			
 			//New Customer Device Fingerprint
 			ClickElement.byXPath(Config.driver,pr.getProperty("CART_BTN_NEW_XPATH"));
@@ -68,7 +64,7 @@ public class VerifyOrderOmnitureProperties {
 			ClickElement.byXPath(Config.driver,pr.getProperty("CHECKOUT_LINK_BACKTOCART_XPATH")); //Click the Logo to return to cart.
 			
 			//Guest Checkout Device fingerprint
-			ClickElement.byXPath(Config.driver,pr.getProperty("CART_BTN_GUEST_XPATH"));
+			ClickElement.byXPathwithWait(Config.driver,pr.getProperty("CART_BTN_GUEST_XPATH"),"2","[CART] Click Guest Checkout.");
 			testStatus = verifyXPath.isfound(Config.driver,pr.getProperty("CHECKOUT_DEVICEFINGERPRINT_XPATH_" + env)); //Checkout New Customer Device Fingerprint
 			StatusLog.printlnPassedResultTrue(Config.driver,"[CHECKOUT] Device Fingerprint Properties is found in Guest Checkout", testStatus);
 			

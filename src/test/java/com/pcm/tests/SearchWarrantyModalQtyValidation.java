@@ -8,6 +8,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.grund.engine.Config;
+import com.pcm.includes.Cart;
 import com.pcm.includes.Homepage;
 import com.pcm.includes.Search;
 import com.grund.request.ClickElement;
@@ -45,13 +46,13 @@ public class SearchWarrantyModalQtyValidation {
 			
 			Homepage.setupConfig(sys.getProperty("host"),sys.getProperty("browser"));
 			env = sys.getProperty("pcmHost");
-			Properties pr = Config.properties("pcm.properties"); //create a method for the pcm.properies
+			//Properties pr = Config.properties("pcm.properties"); //create a method for the pcm.properies
 			
 			//Get the data in the excel and quick add the skus
 			int rowCtr = TableContainer.getRowCount();
 			
 			for(int i = 1; i <= rowCtr; i++){
-				
+				System.out.println("Initialize data from the table container.");
 				sku = TableContainer.getCellValue(i, "sku");
 				qty = TableContainer.getCellValue(i, "qty");
 				warrantyqty = TableContainer.getCellValue(i, "warrantyqty");
@@ -59,12 +60,26 @@ public class SearchWarrantyModalQtyValidation {
 				
 				Search.keyword(Config.driver, sku);
 				Search.addtocart(Config.driver, sku, qty);
+				
+				//Modal Verification.
+				testStatus = verifyXPath.isfoundwithWait(Config.driver, Search.MODAL_ADDTOCART_XPATH + "//span[@class='qty-cart-added' and contains(text(),'" + qty + "')]","2");
+				StatusLog.printlnPassedResultTrue(Config.driver,"[TESTCASE] Verify items added to your cart count in the modal matches the qty.",testStatus);
+				
 				Search.warrantyModalAddtoCart(Config.driver,warrantyqty);
 				
-				testStatus = verifyXPath.isfound(Config.driver,pr.getProperty("SEARCH_LBL_ERRMSGWARRANTYQTY_MODAL_XPATH"));
-				StatusLog.printlnPassedResultTrue(Config.driver,"[TESTCASE] " + title, testStatus);
+				int qtyModal = Integer.parseInt(qty) + 2;
+				qty = String.valueOf(qtyModal);
 				
-				ClickElement.byXPath(Config.driver, pr.getProperty("SEARCH_BTN_ERRMSGWARRANTYQTY_MODAL_XPATH"));
+				//Modal Verification.
+				testStatus = verifyXPath.isfoundwithWait(Config.driver, Search.MODAL_ADDTOCART_XPATH + "//span[@class='qty-cart-added' and contains(text(),'" + qty + "')]","2");
+				StatusLog.printlnPassedResultTrue(Config.driver,"[TESTCASE] Verify items added to your cart count in the modal matches the qty.",testStatus);
+				
+				ClickElement.byXPath(Config.driver, Search.MODAL_BTN_PROCEEDTOCART_XPATH);
+				
+				testStatus = Cart.verifySkuinCart(Config.driver,Search.addedWarrantySku);
+				StatusLog.printlnPassedResultTrue(Config.driver,"[TESTCASE] Verify Warranty sku is found in cart.",testStatus);
+				
+				
 				
 			}	//end for
 			

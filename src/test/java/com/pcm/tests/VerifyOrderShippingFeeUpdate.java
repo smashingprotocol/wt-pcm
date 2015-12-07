@@ -13,6 +13,7 @@ import com.pcm.includes.Checkout;
 import com.pcm.includes.Header;
 import com.pcm.includes.Homepage;
 import com.pcm.includes.Search;
+import com.pcm.includes.SignIn;
 import com.grund.utility.StatusLog;
 import com.grund.utility.TakeScreenShot;
 import com.grund.verify.verifyXPath;
@@ -53,8 +54,10 @@ public class VerifyOrderShippingFeeUpdate {
 			password = pr.getProperty("CHECKOUT_USER_PASSWORD");
 			
 			//Login user via header
-			Header.signIn(Config.driver, email, password);
-		
+			SignIn.login(Config.driver, email, password);
+			testStatus = verifyXPath.isfoundwithWait(Config.driver, Header.LINK_SIGNOUT_XPATH,"2");
+			Assert.assertTrue("User is logged in (Sign out link is display)",testStatus);
+			
 			
 			//Search SKU and Add to Cart.
 			Cart.clearcart(Config.driver);

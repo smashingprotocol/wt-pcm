@@ -10,9 +10,9 @@ import org.junit.Test;
 import com.grund.engine.Config;
 import com.pcm.includes.Cart;
 import com.pcm.includes.Checkout;
+import com.pcm.includes.Header;
 import com.pcm.includes.Homepage;
 import com.pcm.includes.PDP;
-import com.pcm.includes.Search;
 import com.pcm.includes.SignIn;
 import com.grund.utility.StatusLog;
 import com.grund.utility.TakeScreenShot;
@@ -52,20 +52,15 @@ public class VerifyOrderReviewQtyValidation {
 			
 			//Login user via header
 			SignIn.login(Config.driver,email,password);
-			testStatus = verifyXPath.isfound(Config.driver,pr.getProperty("HEADER_LINK_SIGNOUT_XPATH"));
-			StatusLog.printlnPassedResultTrue(Config.driver,"User is logged in (Sign out link is display)",testStatus);
+			testStatus = verifyXPath.isfoundwithWait(Config.driver,Header.LINK_SIGNOUT_XPATH,"2");
+			Assert.assertTrue("User is logged in (Sign out link is display)",testStatus);
 			
 			//Search sku and add to cart
 			Cart.clearcart(Config.driver);
-			Search.keyword(Config.driver, sku);
-			Search.addtocart(Config.driver, sku, qty);
-			
-			//get the edpno in PDP
+
+			//Search sku, open PDP and get edpno
 			edpno = PDP.getEDPNo(Config.driver,sku);
-			
-			//Go to cart and Proceed to Checkout.
-			Cart.navigate(Config.driver);
-			itemid = Cart.getItemID(Config.driver, edpno);
+			PDP.addtoCart(Config.driver);
 			
 			//Enter a invalid quantity from the list in declared in a property
 			String[] orderQty = pr.getProperty("CHECKOUT_INVALIDQTY_LIST").split(",");
@@ -73,7 +68,7 @@ public class VerifyOrderReviewQtyValidation {
 			for(int i = 0; i < ctr; i++ ){
 			
 				Cart.proceedtocheckout(Config.driver);	
-				Checkout.updateOrderItemQTY(Config.driver, itemid, orderQty[i]);
+				Checkout.updateOrderItemQTY(Config.driver, edpno, orderQty[i]);
 				testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("CHECKOUT_INVALID_ERRMSG_ORQTY_XPATH"));
 				
 				StatusLog.printlnPassedResultTrue(Config.driver,"[CHECKOUT] Invalid quantity validation is successful.", testStatus);

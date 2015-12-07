@@ -14,7 +14,6 @@ import org.openqa.selenium.WebElement;
 
 import com.grund.form.SetInputField;
 import com.grund.request.ClickElement;
-import com.grund.utility.Wait;
 import com.grund.verify.verifyXPath;
 
 public class Cart {
@@ -31,7 +30,7 @@ public class Cart {
 		
 		try {
 			properties.load(reader);
-			
+			System.out.println("[STEP] IN CART, LOGIN EXISTING CUSTOMER.");
 			ClickElement.byXPath(driver, properties.getProperty("CART_BTN_EXIST_XPATH"));
 			SetInputField.byXPath(driver,properties.getProperty("CART_INPUT_EMAIL_XPATH"),email);
 			SetInputField.byXPath(driver,properties.getProperty("CART_INPUT_PSWD_XPATH"),password);
@@ -59,10 +58,10 @@ public class Cart {
 		try {
 			
 			properties.load(reader);
-			ClickElement.byXPath(driver, properties.getProperty("CART_LINK_XPATH"));
-			
+			navigate(driver);
+			System.out.println("[STEP] IN CART, CHECK FOR ITEMS AND CLEAR THE CART.");
 			if (carthasitem = verifyXPath.isfound(driver,properties.getProperty("CART_BTN_REMOVEALL_XPATH"))){
-				System.out.println("[CART] Clearing cart items...");
+				
 				ClickElement.byXPath(driver, properties.getProperty("CART_BTN_REMOVEALL_XPATH")); //Click Remove All in cart.
 				ClickElement.byXPath(driver, properties.getProperty("CART_BTN_REMOVEALL_CONFIRM_XPATH")); //Confirmed Remove All in cart.
 			}
@@ -91,28 +90,21 @@ public class Cart {
 		
 	}
 
-	public static void navigate(WebDriver driver) throws FileNotFoundException {
+	public static void navigate(WebDriver driver) throws Exception {
+		System.out.println("[STEP] NAVIGATE TO CART PAGE.");
 		
-		FileReader reader = new FileReader("pcm.properties");
-		properties = new Properties();	
+		boolean xpathfound = verifyXPath.isfoundwithWait(driver, Header.LINK_CART_XPATH, "2");
 		
-		
-		try {
-			properties.load(reader);
-			Wait.waitforXPathToBeClickable(driver, properties.getProperty("CART_LINK_XPATH"), "10");
-			ClickElement.byXPath(driver,properties.getProperty("CART_LINK_XPATH"));
-			Assert.assertEquals("Checkout: Shopping Cart",driver.getTitle());
-			System.out.println("[CART] " + driver.getTitle());
+		if(xpathfound){
+			ClickElement.byXPath(driver, Header.LINK_CART_XPATH);
+		}
 				
-		} catch (Exception e) {
-			Assert.fail("[CART] Error in navigating to cart page.");
-		}	
 	}
 	
 	public static void saveforlater(WebDriver driver, String sku, String itemid) {
 		
 		try{
-			
+			System.out.println("[STEP] IN CART, SAVE FOR LATER AN ITEM.");
 			ClickElement.byXPath(driver, "//a[@class='item-save-for-later' and @item-id='" + itemid + "']");
 			Assert.assertTrue(verifyXPath.isfound(driver, "//div[@id='saveMainCon']//span[contains(text(),'" + sku + "')]"));
 		
@@ -147,15 +139,16 @@ public class Cart {
 		
 		try{
 			properties.load(reader);
-			ClickElement.byXPath(driver,properties.getProperty("CART_BTN_CHECKOUT_XPATH"));
+			System.out.println("[STEP] IN CART, PROCEED TO CHECKOUT.");
+			ClickElement.byXPathwithWait(driver,properties.getProperty("CART_BTN_CHECKOUT_XPATH"),"2");
 			
 			 //Verify the Header in Checkout page is pCM contact no.
 			//testStatus = verifyXPath.isfound(driver,properties.getProperty("CHECKOUT_LABEL_HEADERCONTACTNO_XPATH_pcm")); //problem with skype appearing in phone no.
 			//Assert.assertTrue("[CHECKOUT] Header shows PCM Contact No.",testStatus);
 			
 			//Verify the Change Address link to verify the page is checkout.
-			testStatus = verifyXPath.isfound(driver,properties.getProperty("CHECKOUT_LINK_CHANGESHIP_XPATH"));  
-			Assert.assertTrue("[CHECKOUT] Page is checkout.",testStatus);
+			testStatus = verifyXPath.isfoundwithWait(driver,properties.getProperty("CHECKOUT_LINK_CHANGESHIP_XPATH"),"2");  
+			Assert.assertTrue("[CHECKOUT] Verify Order Page is display.",testStatus);
 			
 			
 		} catch (Exception e) {
@@ -171,7 +164,7 @@ public class Cart {
 		
 		try{
 			properties.load(reader);
-			System.out.println("[CART] Adding sku via Quick Add..." + sku);
+			System.out.println("[STEP] IN CART, ADD ITEM VIA QUICK ADD");
 			SetInputField.byXPath(driver, properties.getProperty("CART_INPUT_QUICKADD_XPATH"), sku);
 			ClickElement.byXPath(driver, properties.getProperty("CART_BTN_QUICKADD_XPATH"));
 			
@@ -189,6 +182,7 @@ public class Cart {
 		
 		try{
 			properties.load(reader);
+			System.out.println("[STEP] IN SERVICE PLAN, CLICK NEXT BUTTON WITHOUT SELECTING SERVICE PLAN");
 			ClickElement.byXPath(driver, properties.getProperty("CART_BTN_BUYNOWWITHOUTENRAVE_XPATH"));
 			ClickElement.byXPath(driver, properties.getProperty("CART_BTN_NEXTSERVICEPLAN_XPATH"));
 			
@@ -208,10 +202,11 @@ public class Cart {
 		
 		try{
 			properties.load(reader);
+			System.out.println("[STEP] IN CART, CLICK GUEST CHECKOUT.");
 			ClickElement.byXPath(driver,properties.getProperty("CART_BTN_GUEST_XPATH"));
 			
 			//Verify the Create Account link in Guest Checkout.
-			testStatus = verifyXPath.isfound(driver,properties.getProperty("CHECKOUT_LINK_CREATEACT_XPATH"));  
+			testStatus = verifyXPath.isfoundwithWait(driver,properties.getProperty("CHECKOUT_LINK_CREATEACT_XPATH"),"2");  
 			Assert.assertTrue("[CHECKOUT] Page is Guest Checkout.",testStatus);
 			
 			
@@ -229,6 +224,7 @@ public class Cart {
 		
 		try{
 			properties.load(reader);
+			System.out.println("[STEP] IN CART, CLICK NEW CUSTOMER");
 			ClickElement.byXPath(driver,properties.getProperty("CART_BTN_NEW_XPATH"));
 			
 			//Verify the Guest Checkout link in New Customer
@@ -248,7 +244,7 @@ public class Cart {
 		properties = new Properties();
 		
 		try{
-			
+			System.out.println("[STEP] IN CART, ENTER COUPON CODE");
 			properties.load(reader);
 			SetInputField.byXPathThenSubmit(driver, properties.getProperty("CART_INPUT_COUPONCODE_XPATH"), couponCode);
 			
@@ -310,6 +306,24 @@ public class Cart {
 		
 		SetInputField.byXPath(driver, properties.getProperty("CART_INPUT_QTY_XPATH"), qty);
 		ClickElement.byXPath(driver, properties.getProperty("CART_LINK_UPDATEQTY_XPATH"));
+		
+	}
+
+	public static boolean verifySkuinCart(WebDriver driver, String sku) {
+
+		boolean iteminCart;
+		
+		try{
+			System.out.println("[STEP] IN CART, INSPECT THE ITEM IS ADDED.");
+			//iteminCart = verifyXPath.isfound(driver, "//div[@class='prodInfo']//span[contains(text(),'" + sku + "')]", "CART: Item is found in cart." + sku);
+			iteminCart = verifyXPath.isfound(driver, "//div[@class='cartItemsCon']//td[@class='cartinfotd']//a[contains(@href,'" + sku + "')]", "CART: Item is found in cart." + sku);
+			return iteminCart;
+			
+		} catch (Throwable e){
+			return false;
+		}
+		
+		
 		
 	}
 

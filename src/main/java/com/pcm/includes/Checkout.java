@@ -69,7 +69,7 @@ public class Checkout {
 		
 		try{
 			properties.load(reader);
-			
+			System.out.println("IN VERIFY ORDER, UPDATE THE ADDRESS IN THE SHIPPING ADDRESS BOOK.");
 			//If the zipcode is not yet selected as the shipping address, change the address.
 			if(!verifyXPath.isfound(driver, "//div[@class='shippingAddCon']//div[contains(text(),'" + zipcode + "')]")){
 				
@@ -107,7 +107,7 @@ public class Checkout {
 	}
 
 	public static void updateOrderItemQTY(WebDriver driver, String itemid, String qty) throws FileNotFoundException {
-
+		System.out.println("[STEP] IN VERIFY ORDER, UPDATE THE ITEM QTY.");
 		FileReader reader = new FileReader("pcm.properties");
 		properties = new Properties();
 		
@@ -177,7 +177,7 @@ public class Checkout {
 	}
 
 	public static void returntoCart(WebDriver driver) throws Exception {
-			
+			System.out.println("[STEP] IN VERIFY ORDER, GO BACK TO CART.");
 			ClickElement.byXPath(driver,CHECKOUT_LINK_BACKTOCART_XPATH);
 		
 	}
@@ -215,7 +215,7 @@ public class Checkout {
 		
 		try {
 			properties.load(reader);
-			
+			System.out.println("[STEP] IN VERIFY ORDER, ENTER CREDIT CARD INFORMATION.");
 			String cardXPath = properties.getProperty("CHECKOUT_INPUT_CARDNO_XPATH");
 			String exMonthXPath = properties.getProperty("CHECKOUT_SELECT_CCMONTHSELECT_XPATH");
 			String exYearXPath  = properties.getProperty("CHECKOUT_SELECT_CCYEARSELECT_XPATH");
@@ -255,7 +255,7 @@ public class Checkout {
 		
 		try {
 			properties.load(reader);
-			
+			System.out.println("[STEP] IN VERIFY ORDER. ACCEPT TERMS AND PLACE ORDER");
 			ClickElement.byXPath(driver, properties.getProperty("CHECKOUT_RADIO_PLACEORDERTERMS_XPATH"));
 			ClickElement.byXPath(driver, properties.getProperty("CHECKOUT_BTN_PLACEYOURORDER_XPATH"));
 			
@@ -273,7 +273,7 @@ public class Checkout {
 		
 		try{
 			properties.load(reader);
-			
+			System.out.println("[STEP] IN VERIFY ORDER, DELETE A ITEM IN ORDER REVIEW.");
 			//GET THE NUMBER OF ITEM ROW
 			int itemCtr = verifyXPath.count(driver, properties.getProperty("CHECKOUT_ORDER_ITEMROW_XPATH"));
 			ClickElement.byXPath(driver, properties.getProperty("CHECKOUT_LINK_EDITCART_XPATH")); 
@@ -300,7 +300,7 @@ public class Checkout {
 		
 		try{
 			properties.load(reader);
-			
+			System.out.println("[STEP] IN VERIFY ORDER, FILL UP BILLING INFORMATION.");
 			SetInputField.byXPath(driver, properties.getProperty("CHECKOUT_INPUT_BILLEMAIL_XPATH"), billFields.get(0));
 			SetInputField.byXPath(driver, properties.getProperty("CHECKOUT_INPUT_BILLCONFIRMEMAIL_XPATH"), billFields.get(1));
 			SetInputField.byXPath(driver, properties.getProperty("CHECKOUT_INPUT_BILLPSWD_XPATH"), billFields.get(2));
@@ -324,8 +324,8 @@ public class Checkout {
 	public static void enterPayPalCreditNew(WebDriver driver, String sSNumber,
 			String dayofBirth, String monthofBirth,
 			String yearofBirth) throws Exception {
-		
-		Wait.waitforXPath(driver, SELECT_PAYPALMONTH_XPATH, "3000");
+		System.out.println("[STEP] IN VERIFY ORDER, ENTER PAYPAL CREDIT INFORMATION.");
+		Wait.waitforXPath(driver, SELECT_PAYPALMONTH_XPATH, "3");
 		
 		SetSelectField.byXPath(driver, SELECT_PAYPALMONTH_XPATH, monthofBirth);
 		SetSelectField.byXPath(driver, SELECT_PAYPALDAY_XPATH, dayofBirth);
@@ -344,7 +344,7 @@ public class Checkout {
 		FileReader reader = new FileReader("pcm.properties");
 		properties = new Properties();
 		properties.load(reader);
-		
+		System.out.println("[STEP] IN QAS MODAL, SELECT USE SHIPPING AND BILLING ADDRESS.");
 		//Verify the QAS Modal I understand use address anyway link
 		ClickElement.byXPath(driver, properties.getProperty("CHECKOUT_LINK_QASMODAL_USEBILLADD_XPATH"));
 		ClickElement.byXPath(driver, properties.getProperty("CHECKOUT_LINK_QASMODAL_USESHIPADD_XPATH"));
@@ -353,7 +353,7 @@ public class Checkout {
 	}
 
 	public static void clickPayPalCredit(WebDriver driver) throws Exception {
-		
+		System.out.println("[STEP] IN VERIFY ORDER, SELECT PAYPAL CREDIT.");
 		ClickElement.byXPath(driver, PAYPAL_CREDIT_XPATH);
 		
 		
@@ -361,7 +361,7 @@ public class Checkout {
 
 	public static void enterGuestBillAdd(WebDriver driver,
 			ArrayList<String> billFields) throws Exception {
-		
+		System.out.println("[STEP] IN VERIFY ORDER, ENTER GUEST BILLING INFORMATION.");
 		SetInputField.byXPath(driver, CHECKOUT_INPUT_BILLEMAIL_XPATH, billFields.get(0));
 		SetInputField.byXPath(driver, CHECKOUT_INPUT_BILLCONFIRMEMAIL_XPATH, billFields.get(1));
 		//SetInputField.byXPath(driver, CHECKOUT_INPUT_BILLPSWD_XPATH, billFields.get(2));
@@ -380,13 +380,13 @@ public class Checkout {
 	}
 
 	public static void orderConfirmationBacktoHome(WebDriver driver) throws Exception {
-		Wait.waitforXPathToBeClickable(driver, IMG_SHOPPERAPPROVEDCLOSE_XPATH, "3000");
-		ClickElement.byXPath(driver,IMG_SHOPPERAPPROVEDCLOSE_XPATH);
+		System.out.println("IN ORDER CONFIRMATION, RETURN TO HOMEPAGE");
+		ClickElement.byXPathwithWait(driver,IMG_SHOPPERAPPROVEDCLOSE_XPATH,"3");
 		ClickElement.byXPath(driver,LINK_ORDERPAGE_HOME_XPATH);
 	}
 
 	public static void clickPreferredAccount(WebDriver driver) throws Exception {
-		
+		System.out.println("[STEP] IN VERIFY ORDER, CLICK PREFERRED ACCOUNT.");
 		ClickElement.byXPath(driver, PREFERRED_ACCOUNT_XPATH);
 		
 	}
@@ -394,7 +394,7 @@ public class Checkout {
 	public static void enterPreferredAccountNew(WebDriver driver, String sSN1,
 			String sSN2, String sSN3, String dayofBirth, String monthofBirth,
 			String yearofBirth, String rStatus, String income) throws Exception {
-		
+		System.out.println("[STEP] IN VERIFY ORDER, ENTER PREFERRED ACCOUNT.");
 		Wait.waitforXPath(driver, INPUT_PREFERREDACT_SSN1_XPATH, "3000");
 		
 		SetInputField.byXPath(driver, INPUT_PREFERREDACT_SSN1_XPATH, sSN1);

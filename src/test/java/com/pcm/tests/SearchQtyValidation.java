@@ -47,7 +47,7 @@ public class SearchQtyValidation {
 			env = sys.getProperty("pcmHost");
 			Properties pr = Config.properties("pcm.properties"); //create a method for the pcm.properies
 			
-			sku = pr.getProperty("SEARCH_SKU_DFLT");
+			sku = pr.getProperty("SEARCH_SKU_INVLIMIT");
 			
 			//Get the data in the excel and quick add the skus
 			int rowCtr = TableContainer.getRowCount();

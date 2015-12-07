@@ -49,17 +49,16 @@ public class SearchComparePageAddtoCartBtnCondition {
 			qty = "1";
 			email = pr.getProperty("CHECKOUT_USER_EMAIL_" + env);
 			password = pr.getProperty("CHECKOUT_USER_PASSWORD");
-			sku1 = pr.getProperty("SEARCH_SKU_ADDINCARTSAVINGS");
+			sku1 = pr.getProperty("SEARCH_SKU_FREESHIP");
 			sku2 = pr.getProperty("SEARCH_SKU_CALLUS");
-			sku3 = pr.getProperty("SEARCH_SKU_WHATFINALPRICE_WITHSLASH");
-			sku4 = pr.getProperty("SEARCH_SKU_FREESHIP");
+			sku3 = pr.getProperty("SEARCH_SKU_ADDINCARTSAVINGS");
+			
 			
 			ArrayList<String> compareSkus = new ArrayList<String>();
 			
 			compareSkus.add(0,sku1);
 			compareSkus.add(1,sku2);
 			compareSkus.add(2,sku3);
-			compareSkus.add(3,sku4);
 			
 			Search.compareSkus(Config.driver,compareSkus);
 			

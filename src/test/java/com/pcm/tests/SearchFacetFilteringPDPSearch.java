@@ -9,7 +9,6 @@ import org.junit.Test;
 
 import com.grund.engine.Config;
 import com.pcm.includes.Homepage;
-import com.pcm.includes.PDP;
 import com.pcm.includes.Search;
 import com.grund.utility.StatusLog;
 import com.grund.utility.TableContainer;
@@ -55,31 +54,32 @@ public class SearchFacetFilteringPDPSearch {
 			int rowCtr = TableContainer.getRowCount();
 			
 			for(int i = 1; i <= rowCtr; i++){
-				
+					System.out.println("Initialize data from the table container.");
 					keyword = TableContainer.getCellValue(i, "keyword");
 					brand = TableContainer.getCellValue(i, "brand");
 					title = TableContainer.getCellValue(i, "title");
 					
 					Search.keyword(Config.driver, keyword);
-					String brndcount = Search.getBrandFacetCount(Config.driver,brand);
 					Search.filterByBrand(Config.driver,brand);
+					String brndcount = Search.getBrandFacetCount(Config.driver,brand);
+					
 					
 					//Verify the Item list count.
 					
 					if(Integer.valueOf(brndcount) < 25){
-						testStatus = verifyXPath.isfound(Config.driver, "//div[@class='num']//span[@class='ottl' and text()='" + brndcount + "']");
+						testStatus = verifyXPath.isfound(Config.driver, "(//div[@class='pager-info']//span[@class='totalPage' and text()='" + brndcount + "']) [position()=1]");
 						StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Facet brand count matches the search last page count.",testStatus);
 						
 						//Verify the Item count.
-						testStatus = verifyXPath.isfound(Config.driver, "(" + pr.getProperty("SEARCH_ITEMCOL_XPATH") + ") [position()=" + brndcount + "]");
+						testStatus = verifyXPath.isfound(Config.driver, "(" + Search.ITEMCOL_XPATH + ") [position()=" + brndcount + "]");
 						StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Facet brand matches the count of items in search.",testStatus);
 					} //end if 
 					
 					Search.openPDPbySearchResult(Config.driver, keyword);
-					PDP.searchKeyword(Config.driver, pr.getProperty("SEARCH_KEYWORD_DFLT"));
+					Search.keyword(Config.driver, pr.getProperty("SEARCH_KEYWORD_DFLT"));
 					
 					//Verify the Item count is the default 25.
-					testStatus = verifyXPath.isfound(Config.driver, "(" + pr.getProperty("SEARCH_ITEMCOL_XPATH") + ") [position()=25]");
+					testStatus = verifyXPath.isfound(Config.driver, "(" + Search.ITEMCOL_XPATH + ") [position()=25]");
 					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Search from PDP shows Search results.",testStatus);
 					
 					StatusLog.printlnPassedResult(Config.driver,"[SEARCH] " + title);
