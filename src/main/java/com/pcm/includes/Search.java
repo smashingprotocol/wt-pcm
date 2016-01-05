@@ -41,13 +41,24 @@ public class Search {
 	public static final String DIV_RELATEDCONTENT_XPATH = "id('content-search-48')";
 	public static final String UPP_UPPSUCCESSMSG_XPATH = "//div[@class='modal-content']//p[contains(text(),'A price quote has been sent to this email address')]";
 	public static final String BTN_MODAL_CONTINUESHOPPING_XPATH = "//button[text()='Continue Shopping']";
+	public static final String BTN_MODAL_ADDEDCARTCONTINUE_XPATH = "(//a[@class='mid continue ga' and text()='Continue Shopping']) [position()=5]";
 	public static final String BTN_COMPARE_XPATH = "//a[@class='compare-btn']";
 	public static final String IMG_ADDINCART_XPATH = "//div[@class='violators icn-vio-slp']";
 	public static final String BTN_ADDINCART_XPATH = "//a[@title='Add to Cart']";
 	public static final String LBL_SOLDOUT_XPATH = "//span[@class='statavlb' and text()='Sold Out']";
 	public static final String INPUT_SEARCHFIELD_XPATH = "(//input[@placeholder='Search Products']) [position()=1]";
-	public static final String LINK_SEARCHGO_XPATH = "//a[@class='searchInputBtn']";
+	//public static final String LINK_SEARCHGO_XPATH = "//a[@class='searchInputBtn']";
+	public static final String LINK_SEARCHGO_XPATH = "//a//span[@class='icn-glss']";
 	public static final String BTN_NEXTPAGE_XPATH = "(//a[@class='next ']) [position()=1]";
+	public static final String BTN_REMOVESELCAT_XPATH = "//span[@class='rm-cat']";
+	private static final String BTN_CLICKHERE_XPATH = "//a[@title='Click Here']";
+	public static final String BTN_CLOSEUPPMODAL_XPATH = "(//button[@class='close']) [position()=2]";
+	public static String LBL_FREEGROUNDSHIP_XPATH = "//div[@class='tlheader' and contains(text(),'Free Ground Shipping')]";
+	public static String CSS_LISTPRICE_NOSTRIKE;
+	public static String CSS_LISTPRICE_STRIKE;
+	public static Boolean relatedCategorySelected;
+	public static Boolean removeCatXButton;
+	
 	
 	public static String addedWarrantySku;
 
@@ -77,9 +88,25 @@ public class Search {
 	public static void addtocart(WebDriver driver, String sku, String qty) throws Exception{
 		
 		try{
+			
+		Properties pr = Config.properties("pcm.properties");	
+		String isNewSearch = pr.getProperty("isSearchNew");
+
 		System.out.println("[STEP] IN SEARCH, SELECT ITEM QTY AND CLICK ADD TO CART.");
-		SetSelectField.selectTextbyXPath(driver, "//div[@data-sku='" + sku + "']//select[@class='qty-text qty-input']", qty, "SEARCH: Select quantity");
-		ClickElement.byXPath(driver,"//a[@href='#sku=" + sku + "']"); // Click the Add to cart button in the search.
+		
+		if(isNewSearch.equals("true")){
+			SetSelectField.selectTextbyXPath(driver, "//div[@data-sku='" + sku + "']//select[@class='qty-text qty-input']", qty, "SEARCH: Select quantity");
+			ClickElement.byXPath(driver,"//a[@href='#sku=" + sku + "']"); // Click the Add to cart button in the search.			
+		} else {
+			SetInputField.byXPath(driver, "//input[@id='addCartQty" + sku + "']", qty, "SEARCH: Enter quantity");
+			ClickElement.byXPath(driver,"//a[@id='addCartButtonFor" + sku + "']"); // Click the Add to cart button in the search.		
+			
+			Boolean modalAddCart = verifyXPath.isfound(driver, BTN_MODAL_ADDEDCARTCONTINUE_XPATH);
+			if(modalAddCart){
+				ClickElement.byXPath(driver, BTN_MODAL_ADDEDCARTCONTINUE_XPATH, "Search: Click Continue button in Added to Cart Modal.");
+			}
+			
+		}
 		
 		
 		} catch (Exception e){
@@ -90,11 +117,26 @@ public class Search {
 	public static void uppSubmitEmailFinalPrice(WebDriver driver,
 			String sku, String email) throws Exception {
 		
+		Properties pr = Config.properties("pcm.properties");	
+		String isNewSearch = pr.getProperty("isSearchNew");
 		//Search keyword and click Click Here
 		Search.keyword(driver, sku);
+		
 		ClickElement.byXPath(driver, SEARCH_BTN_CLICKHERE_XPATH,"SEARCH: Click Here Button to display UPP.");
-		SetInputField.byXPath(driver, SEARCH_INPUT_UPPMODALEMAIL_XPATH, email, "SEARCH: Enter email address at the UPP Modal:" + email);
-		ClickElement.byXPath(driver, SEARCH_BTN_UPPMODALSUBMIT_XPATH, "SEARCH: Click Submit button at the UPP Modal.");
+		
+		
+		if(isNewSearch.equals("true")){
+			//responsive version
+			SetInputField.byXPath(driver, SEARCH_INPUT_UPPMODALEMAIL_XPATH, email, "SEARCH: Enter email address at the UPP Modal:" + email);
+			ClickElement.byXPath(driver, SEARCH_BTN_UPPMODALSUBMIT_XPATH, "SEARCH: Click Submit button at the UPP Modal.");
+			
+		} else{
+			//prod version
+			SetInputField.byXPath(driver, "//input[@id='emailAddUpp']", email, "SEARCH: Enter email address at the UPP Modal:" + email);
+			ClickElement.byXPath(driver, "//a[@id='submit-upp']", "SEARCH: Click Submit button at the UPP Modal.");
+			
+		}
+		
 		
 	}
 
@@ -285,5 +327,97 @@ public class Search {
 		ClickElement.byXPath(driver, "//a[@id='customizeButtonFor" + sku + "']", "SEARCH: Click Buy Now Customize button.");
 		
 	}
+
+	public static void filterByRelatedCategory(WebDriver driver,
+			String category1) throws Exception {
+		// TODO Auto-generated method stub
+		String relCatXPath = "//a[@cat='" + category1 + "']";
+		String catSelected1XPath = "//ul[@class='hierarchy-2']//span[contains(text(),'" + category1 + "')]";
+		
+		StatusLog.log("[STEP] IN FACET CATEGORY, SELECT A RELATED CATEGORIES.");
+		ClickElement.byXPath(driver, relCatXPath);
+		
+		relatedCategorySelected = verifyXPath.isfound(driver, catSelected1XPath);
+		removeCatXButton = verifyXPath.isfound(driver, BTN_REMOVESELCAT_XPATH);
+	}
+
+	public static String getRelatedCategoryCount(WebDriver driver,
+			String category1) {
+		
+		String relCatXPath = "//a[@cat='" + category1 + "']";
+		String catCount;
+		
+		StatusLog.log("[STEP] IN FACET CATEGORY, GET THE COUNT OF THE RELATED CATEGORY TO SELECT.");
+		catCount = verifyXPath.getText(driver, relCatXPath);
+		catCount = catCount.replaceAll("[^\\d.]", "");
+		catCount = catCount.replaceAll("[.]", "");
+		StatusLog.log("Return count is: " + catCount);
+		return catCount;
+		
+	}
+
+	public static void setTempValue(WebDriver driver, String property) {
+		
+		if(property.equals("true")){
+			//search responsive list price strike CSS
+			CSS_LISTPRICE_STRIKE  = "lprice prod-lprice str";
+			CSS_LISTPRICE_NOSTRIKE  = "lprice prod-lprice";
+			
+		} else{
+			//search prod version list price strike CSS
+			CSS_LISTPRICE_STRIKE  = "lprice str prod-lprice";
+			CSS_LISTPRICE_NOSTRIKE  = "lprice prod-lprice";
+			LBL_FREEGROUNDSHIP_XPATH = "//span[@class='prc-desc' and contains(text(),'Free Shipping')]";
+		}
+		
+		
+	}
+
+	public static void additionalInCartSavings(WebDriver driver,
+			String property) throws Exception {
+		
+		Properties pr = Config.properties("pcm.properties");
+		Boolean testStatus;
+		
+		if(property.equals("true")){
+			//Verify the Additional in-cart savings text is no longer display
+			testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCH_LABEL_ADDINCART_XPATH"));
+			StatusLog.printlnPassedResultFalse(Config.driver,"[SEARCH] Additional in-cart text is not display.",testStatus);
+			
+			//Verify the Click Here Button display is no longer display
+			testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCH_BTN_CLICKHERE_XPATH"));
+			StatusLog.printlnPassedResultFalse(Config.driver,"[SEARCH] Click Here button is not display.",testStatus);
+			
+			//Verify the Search New Instant Savings text
+			testStatus = verifyXPath.isfound(Config.driver, Search.LABEL_INSTANTSAVINGS_XPATH);
+			StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Instant Savings text is display.",testStatus);
+			
+			//Verify the Search New Add to Cart Button display
+			testStatus = verifyXPath.isfound(Config.driver, Search.BTN_ADDINCART_XPATH);
+			StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Expected Add to Cart button is display.",testStatus);
+			
+			
+			
+		} else{
+			//Additional in cart prod version.
+			//Verify the Additional in-cart savings text is no longer display
+			testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCH_LABEL_ADDINCART_XPATH"));
+			StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Additional in-cart text is display.",testStatus);
+			
+			//Verify the Click Here Button display is no longer display
+			testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCH_BTN_CLICKHERE_XPATH"));
+			StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Click Here button is display.",testStatus);
+			
+			//Verify the Search New Add to Cart Button display
+			testStatus = verifyXPath.isfound(Config.driver, Search.BTN_CLICKHERE_XPATH);
+			StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Expected Click Here button is display.",testStatus);
+			
+			
+		}//end if
+	
+			
+		
+		
+	} //end static boolean
 
 }

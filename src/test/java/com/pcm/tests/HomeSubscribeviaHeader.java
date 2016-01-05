@@ -41,7 +41,7 @@ public class HomeSubscribeviaHeader {
 			password = pr.getProperty("CHECKOUT_USER_PASSWORD");
 			
 			//Verify the xpath of the Subscribe box is found.
-			testStatus = verifyXPath.isfound(Config.driver,pr.getProperty("HEADER_INPUT_SUBSCRIBE_XPATH"));
+			testStatus = verifyXPath.isfound(Config.driver,Header.INPUT_SUBSCRIBE_XPATH);
 			StatusLog.printlnPassedResultTrue(Config.driver,"[HOMEPAGE] Verify the Subscribtion field is display.",testStatus);
 			
 			Header.subscribeSubmitEmail(Config.driver,email);
@@ -55,14 +55,14 @@ public class HomeSubscribeviaHeader {
 			SignIn.login(Config.driver, email, password);
 			
 			//Verify the xpath of the Subscribe box is not found after logged in.
-			testStatus = verifyXPath.isfound(Config.driver,pr.getProperty("HEADER_INPUT_SUBSCRIBE_XPATH"));
+			testStatus = verifyXPath.isfound(Config.driver,Header.INPUT_SUBSCRIBE_XPATH);
 			StatusLog.printlnPassedResultFalse(Config.driver,"[HOMEPAGE] Verify subscribe header is not display after logged in.",testStatus);
 			
 			//Unsubscribe the user.
 			MyAccount.unsubscribe(Config.driver,email);
 			
 			//Verify the xpath of the Subscribe box is found after Unsubscribed.
-			testStatus = verifyXPath.isfound(Config.driver,pr.getProperty("HEADER_INPUT_SUBSCRIBE_XPATH"));
+			testStatus = verifyXPath.isfound(Config.driver,Header.INPUT_SUBSCRIBE_XPATH);
 			StatusLog.printlnPassedResultTrue(Config.driver,"[HOMEPAGE] Verify the Subscribtion field is display after Unsubscribed.",testStatus);
 			
 			//Overall Test Result

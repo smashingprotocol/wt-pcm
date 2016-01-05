@@ -71,7 +71,7 @@ public class MyAccountCreateNewAccountDefaultAddresses {
 				
 				CreateAccount.enterCreateAcountFields(Config.driver,userInfoFields);
 				
-				testStatus = verifyXPath.isfound(Config.driver,pr.getProperty("HEADER_LINK_SIGNOUT_XPATH"));
+				testStatus = verifyXPath.isfound(Config.driver,Header.LINK_SIGNOUT_XPATH);
 				StatusLog.printlnPassedResultTrue(Config.driver,"[CREATE ACCOUNT] User is logged in after created account (Sign out link is display)",testStatus);
 				
 				

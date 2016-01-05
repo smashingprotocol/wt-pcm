@@ -47,7 +47,8 @@ public class SearchVerifyFreeShippingItem {
 			Homepage.setupConfig(sys.getProperty("host"),sys.getProperty("browser"));
 			env = sys.getProperty("pcmHost");
 			Properties pr = Config.properties("pcm.properties"); //create a method for the pcm.properies
-			
+			String isSearchNew = pr.getProperty("isSearchNew");
+			Search.setTempValue(Config.driver, isSearchNew);
 			//Define properties
 			qty = "1";
 			email = pr.getProperty("CHECKOUT_USER_EMAIL_" + env);
@@ -72,7 +73,7 @@ public class SearchVerifyFreeShippingItem {
 				
 				if(Boolean.valueOf(withIcon)){
 					//Verify the Free Shipping ICON
-					testStatus = verifyXPath.isfound(Config.driver, pr.getProperty("SEARCHNEW_LABEL_FREEGROUNDSHIP_XPATH"));
+					testStatus = verifyXPath.isfound(Config.driver, Search.LBL_FREEGROUNDSHIP_XPATH);
 					StatusLog.printlnPassedResultTrue(Config.driver,"[SEARCH] Free Ground Shipping Text is display.",testStatus);
 					
 				} else{

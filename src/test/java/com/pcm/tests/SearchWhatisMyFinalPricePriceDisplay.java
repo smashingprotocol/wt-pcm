@@ -88,7 +88,7 @@ public class SearchWhatisMyFinalPricePriceDisplay {
 					StatusLog.printlnPassedResult(Config.driver,"[SEARCH] UPP MODAL" + title);
 					
 					//Close modal
-					ClickElement.byXPath(Config.driver, pr.getProperty("SEARCHNEW_BTN_CLOSEUPPMODAL_XPATH"));
+					ClickElement.byXPath(Config.driver, Search.BTN_CLOSEUPPMODAL_XPATH);
 					
 				} else{
 					//No slashed
@@ -103,7 +103,7 @@ public class SearchWhatisMyFinalPricePriceDisplay {
 					StatusLog.printlnPassedResult(Config.driver,"[SEARCH] UPP MODAL" + title);
 					
 					//Close modal
-					ClickElement.byXPath(Config.driver, pr.getProperty("SEARCHNEW_BTN_CLOSEUPPMODAL_XPATH"));
+					ClickElement.byXPath(Config.driver, Search.BTN_CLOSEUPPMODAL_XPATH);
 						
 				}
 				

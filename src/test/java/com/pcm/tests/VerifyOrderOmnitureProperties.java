@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import com.grund.engine.Config;
 import com.pcm.includes.Cart;
+import com.pcm.includes.Checkout;
 import com.pcm.includes.Homepage;
 import com.pcm.includes.Search;
 import com.pcm.includes.SignIn;
@@ -61,7 +62,7 @@ public class VerifyOrderOmnitureProperties {
 			testStatus = verifyXPath.isfound(Config.driver,pr.getProperty("CHECKOUT_SCRIPT_OMNI_XPATH")); //Checkout New Customer Omniture Properties
 			StatusLog.printlnPassedResultTrue(Config.driver,"[CHECKOUT] Omniture Properties is found in New Customer", testStatus);
 			
-			ClickElement.byXPath(Config.driver,pr.getProperty("CHECKOUT_LINK_BACKTOCART_XPATH")); //Click the Logo to return to cart.
+			ClickElement.byXPath(Config.driver,Checkout.CHECKOUT_LINK_BACKTOCART_XPATH); //Click the Logo to return to cart.
 			
 			//Guest Checkout Device fingerprint
 			ClickElement.byXPathwithWait(Config.driver,pr.getProperty("CART_BTN_GUEST_XPATH"),"2","[CART] Click Guest Checkout.");
@@ -72,7 +73,7 @@ public class VerifyOrderOmnitureProperties {
 			testStatus = verifyXPath.isfound(Config.driver,pr.getProperty("CHECKOUT_SCRIPT_OMNI_XPATH")); //Checkout New Customer Omniture Properties
 			StatusLog.printlnPassedResultTrue(Config.driver,"[CHECKOUT] Omniture Properties is found in Guest Checkout", testStatus);
 			
-			ClickElement.byXPath(Config.driver,pr.getProperty("CHECKOUT_LINK_BACKTOCART_XPATH")); //Click the Logo to return to cart.
+			ClickElement.byXPath(Config.driver,Checkout.CHECKOUT_LINK_BACKTOCART_XPATH); //Click the Logo to return to cart.
 			
 			//Existing Customer Device FingerPrint
 			Cart.existingLogin(Config.driver, email, password);

@@ -124,20 +124,18 @@
 	    <classloadertask classpathRef="mail.path" loader="thread"/> 
 	
 	<target name="email" if="createEmailReport">
-		<copy file="${junit.output.dir}/junit-noframes.html" tofile="\\${reportserver}\${project.Name}\${now}\junit-noframes.html" />
+		<!--<copy file="${junit.output.dir}/junit-noframes.html" tofile="\\${reportserver}\${project.Name}\${now}\junit-noframes.html" /> -->
 		<mail mailhost="${mailhost}" mailport="${mailport}" subject="[${TEST_HOST}]: ${ant.project.name} Automated Basic Test Result" tolist="${tolist}">
 			<from address="${from}"/>
-			<message>Automated Basic test has been completed. Please check results on the link provided.
+			<message>Automated Basic test has been completed. Please check results on the link provided or open the attached file.
 http://${reportserver}/${project.Name}/${now}/junit-noframes.html
 			</message>
-			<!--
 			<attachments>
 				<fileset dir="${junit.output.dir}">
 					<include name="all-tests.html"/>
 					<include name="junit-noframes.html"/>					
 				</fileset>
-			</attachments>
-			-->
+			</attachments>			
 		</mail>
 	</target>
 	

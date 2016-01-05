@@ -10,6 +10,7 @@ import org.openqa.selenium.WebDriver;
 import com.grund.engine.Config;
 import com.grund.form.SetInputField;
 import com.grund.request.ClickElement;
+import com.grund.utility.StatusLog;
 import com.grund.verify.verifyXPath;
 
 
@@ -24,21 +25,22 @@ public class Header {
 	public static final String LINK_SIGNOUT_XPATH = "(//a[@href='/o/msc-login?op=mall.web.common.signInLink.signInLink&reqOp=logOut']) [position()=2]";
 	public static final String LINK_USER_XPATH = "//a[@id='user-signin-btn-21']";
 	public static final String LINK_CART_XPATH = "//a[@href='/n/Shopping-Cart/msc-cart']";
+	public static final String MODAL_SUBSCRIBE_THANKYOU_XPATH="//div[@class='modalbx' and contains(@style,'display: block')]";
+	public static final String MODAL_SUBSCRIBE_THANKYOU_CLOSE_XPATH="//div[@class='modalbx' and contains(@style,'display: block')]//div[@class='cls']";
+
 	
 	public static Properties properties;
 	
 	public static void subscribeSubmitEmail(WebDriver driver, String email) throws Exception {
-		System.out.println("[STEP] IN HEADER, ENTER EMAIL AND SUBSCRIBE");
+		StatusLog.log("[STEP] IN HEADER, ENTER EMAIL AND SUBSCRIBE");
 		SetInputField.byXPath(driver, INPUT_SUBSCRIBE_XPATH, email);
 		ClickElement.byXPath(driver, BTN_SUBSCRIBE_XPATH);
 		
 	}
 
 	public static void signIn(WebDriver driver, String email, String password) throws Exception {
-		FileReader reader = new FileReader("pcm.properties");
-		properties = new Properties();
-		properties.load(reader);
-		System.out.println("[STEP] IN HEADER, SIGN IN");
+		
+		StatusLog.log("[STEP] IN HEADER, SIGN IN");
 		
 		boolean textxpath = verifyXPath.isfoundwithWait(driver, LINK_SIGNIN_XPATH, "2");
 		if(textxpath){
@@ -47,9 +49,9 @@ public class Header {
 		
 		ClickElement.byXPath(driver, BTN_SIGNIN_XPATH);
 		
-		SetInputField.byXPath(driver,properties.getProperty("LOGIN_INPUT_EMAIL_XPATH"),email);
-		SetInputField.byXPath(driver,properties.getProperty("LOGIN_INPUT_PSWD_XPATH"),password);
-		ClickElement.byXPath(driver, properties.getProperty("LOGIN_BTN_SIGNIN_XPATH"));
+		SetInputField.byXPath(driver,SignIn.INPUT_EMAIL_XPATH,email);
+		SetInputField.byXPath(driver,SignIn.INPUT_PSWD_XPATH,password);
+		ClickElement.byXPath(driver, SignIn.BTN_SIGNIN_XPATH);
 		
 		Boolean testStatus = verifyXPath.isfoundwithWait(Config.driver, Header.LINK_USER_XPATH,"2");
 		Assert.assertTrue("[VERIFY] User is logged in.",testStatus);
@@ -57,11 +59,8 @@ public class Header {
 	}
 
 	public static void swapAccount(WebDriver driver, String username, String siteRedirect) throws Exception {
-		FileReader reader = new FileReader("pcm.properties");
-		properties = new Properties();
-		properties.load(reader);
 		
-		ClickElement.byXPath(driver, properties.getProperty("HEADER_LINK_USER_XPATH"));
+		ClickElement.byXPath(driver, Header.LINK_USER_XPATH);
 		
 		if(siteRedirect.equals("bd")){
 			ClickElement.byXPath(driver, "(//a[@data-storeid='S128' and @data-userloginid='" + username + "']) [position()=2]");
@@ -96,9 +95,9 @@ public class Header {
 		ClickElement.byXPath(driver, LINK_SIGNIN_XPATH);
 		ClickElement.byXPath(driver, BTN_SIGNIN_XPATH);
 		
-		SetInputField.byXPath(driver,properties.getProperty("LOGIN_INPUT_EMAIL_XPATH"),username);
-		SetInputField.byXPath(driver,properties.getProperty("LOGIN_INPUT_PSWD_XPATH"),password);
-		ClickElement.byXPath(driver, properties.getProperty("LOGIN_BTN_SIGNIN_XPATH"));
+		SetInputField.byXPath(driver,SignIn.INPUT_EMAIL_XPATH,username);
+		SetInputField.byXPath(driver,SignIn.INPUT_PSWD_XPATH,password);
+		ClickElement.byXPath(driver, SignIn.BTN_SIGNIN_XPATH);
 		
 		SignIn.storeSelect(driver,siteLogin);
 		
@@ -108,16 +107,13 @@ public class Header {
 	public static void signInNoValidation(WebDriver driver, String username,
 			String password) throws Exception {
 		
-		FileReader reader = new FileReader("pcm.properties");
-		properties = new Properties();
-		properties.load(reader);
 		System.out.println("[STEP] IN HEADER, SIGN IN");
 		ClickElement.byXPath(driver, LINK_SIGNIN_XPATH);
 		ClickElement.byXPath(driver, BTN_SIGNIN_XPATH);
 		
-		SetInputField.byXPath(driver,properties.getProperty("LOGIN_INPUT_EMAIL_XPATH"),username);
-		SetInputField.byXPath(driver,properties.getProperty("LOGIN_INPUT_PSWD_XPATH"),password);
-		ClickElement.byXPath(driver, properties.getProperty("LOGIN_BTN_SIGNIN_XPATH"));
+		SetInputField.byXPath(driver,SignIn.INPUT_EMAIL_XPATH,username);
+		SetInputField.byXPath(driver,SignIn.INPUT_PSWD_XPATH,password);
+		ClickElement.byXPath(driver, SignIn.BTN_SIGNIN_XPATH);
 		
 		
 		

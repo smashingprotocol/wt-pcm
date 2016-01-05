@@ -15,6 +15,7 @@ import com.grund.utility.StatusLog;
 import com.grund.utility.TableContainer;
 import com.grund.utility.TakeScreenShot;
 import com.grund.verify.VerifyDocumentURL;
+import com.grund.verify.verifyXPath;
 
 public class MyAccountSwapAccountRedirect {
 
@@ -42,7 +43,7 @@ public class MyAccountSwapAccountRedirect {
 			Properties pr = Config.properties("pcm.properties"); //create a method for the pcm.properies
 			
 			bdNavLink = pr.getProperty("BD_NAVLINK_prod");
-			Long wait = Long.parseLong(pr.getProperty("WAIT_SEC"));
+			
 			//Get the data in the excel and quick add the skus
 			int rowCtr = TableContainer.getRowCount();
 			
@@ -56,7 +57,8 @@ public class MyAccountSwapAccountRedirect {
 					
 					Header.signIn(Config.driver,username,password);
 					Header.swapAccount(Config.driver,username,siteLogin);
-					Thread.sleep(wait);
+					
+					testStatus = verifyXPath.isfoundwithWait(Config.driver,pr.getProperty("BD_INPUT_SEARCH_XPATH"), "2");
 					testStatus = VerifyDocumentURL.containsText(Config.driver, bdNavLink);
 					StatusLog.printlnPassedResultTrue(Config.driver,"[MY ACCOUNT] " + title,testStatus);
 

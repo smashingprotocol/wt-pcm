@@ -15,8 +15,8 @@ import com.pcm.includes.SignIn;
 import com.grund.utility.StatusLog;
 import com.grund.utility.TableContainer;
 import com.grund.utility.TakeScreenShot;
-import com.grund.utility.Wait;
 import com.grund.verify.VerifyDocumentURL;
+import com.grund.verify.verifyXPath;
 
 public class LoginSingleSignOn {
 
@@ -71,7 +71,7 @@ public class LoginSingleSignOn {
 						} else{
 							
 							Header.signInNoValidation(Config.driver,username,password);
-							Wait.waitforXPath(Config.driver, "//div[@class='bdmainmenu']//input[@id='searchTextInput']", "10");
+							testStatus = verifyXPath.isfoundwithWait(Config.driver,pr.getProperty("BD_INPUT_SEARCH_XPATH"), "2");
 							testStatus = VerifyDocumentURL.containsText(Config.driver, bdNavLink);
 							StatusLog.printlnPassedResultTrue(Config.driver,"[TESTCASE] " + title,testStatus);
 						} //end if siteselector

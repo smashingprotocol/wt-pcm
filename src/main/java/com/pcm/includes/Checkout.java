@@ -47,7 +47,7 @@ public class Checkout {
 	public static String CHECKOUT_INPUT_BILLZIP_XPATH="//input[@id='billingZip']";
 	public static String CHECKOUT_INPUT_BILLPHONE_XPATH="//input[@id='billingTelephone']";
 	public static String CHECKOUT_INPUT_BILLMOBILE_XPATH="//input[@id='billingMobile']";
-	public static String CHECKOUT_LINK_BACKTOCART_XPATH="//a[@href='/n/Shopping-Cart/msc-cart?op=mall.web.zones.shoppingCartMain.processCart']";
+	public static String CHECKOUT_LINK_BACKTOCART_XPATH="//img[@src='//image1.cc-inc.com/pcm/pcmHeaderCheckOut.png']";
 	public static String LINK_ORDERPAGE_HOME_XPATH="//a[@href='/home']";	
 	public static String IMG_SHOPPERAPPROVEDCLOSE_XPATH="//img[@id='sa_close']";
 	public static String INPUT_PREFERREDACT_SSN1_XPATH="//input[@id='ssn_1_input']";

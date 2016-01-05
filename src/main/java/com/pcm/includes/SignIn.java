@@ -16,6 +16,9 @@ import com.grund.verify.verifyXPath;
 
 public class SignIn {
 
+	public static final String INPUT_EMAIL_XPATH = "//input[@id='emailAddress']";
+	public static final String INPUT_PSWD_XPATH = "//input[@id='password']";
+	public static final String BTN_SIGNIN_XPATH = "//input[@id='input-submit']";
 	public static Properties properties;
 	static boolean login = true;
 	
